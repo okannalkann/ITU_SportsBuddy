@@ -1,0 +1,17 @@
+body {
+    font-family: 'Calibri'; 
+}
+
+p{
+    text-align: center;
+}
+footer{
+    text-align: center;
+}
+h1{
+    text-align: center;
+}
+
+a.nav-link:hover, a.navbar-brand:hover {
+    color:#ac00e6 !important;
+}

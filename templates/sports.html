@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block title%} Sports {% endblock %}
+{% block username %}  <p>{{username}}</p> {% endblock %}
+{% block content%}
+    <h1 style="color:white;"><b> SPORTS</b> </h1>
+    <div class="container">
+      <div class="row" style="padding-top:20px;">
+        {% if data%}
+            {% for i in range(0, len) %}
+                <div class="col-lg-2">
+                    <div class="card bg-dark mb-2" style="width: 18rem; hover: {color: purple;}">
+
+                        <a href="/sports/{{data[i][0]}}">
+                          <img class="card-img-top mx-auto" style="text-align:center;" src="{{ url_for('static', filename='/images/'+ data[i][1]+'.jpg')}}" 
+                            onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/404.jpg')}}'" alt="Card image cap" height="160px" width="100px">
+                          
+                          <div class="card-body" style="height:90px;">
+                              <h3 class="card-title text-white">{{data[i][1]}}</h3>
+                              <p class="card-text"></p>
+                          </div>
+                         </a>
+                    </div>
+                    <br>
+                </div>
+            {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+
+{% endblock %}
+  </body>
+</html>

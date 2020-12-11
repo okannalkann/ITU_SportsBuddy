@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block title%} Contact {% endblock %}
+{% block username %}  <p>{{username}}</p> {% endblock %}
+{% block content%}
+{% if yok%}
+<h1 style="color:white;"><b> {{yok}}</b> </h1>
+{% endif%}
+
+<h1 style="color:white;"><b> {{ sport_name[0]}}</b> </h1>
+<!--
+<div class="container">
+    <div class="row" style="padding-top:20px;">
+    {% if data%}
+
+        <div class="col-lg-12">
+            <div class="card text-center">
+                <div class="card-header">
+                    {{data[i][0]}} {{data[i][1]}}
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{data[i][3]}}</p>
+                    <a href="/sports/{{sport_ids}}/{{data[i][0]}}_{{data[i][1]}}" class="btn btn-warning btn-lg">İletişim Kur</a>
+                </div>
+                <div class="card-footer text-muted">
+                {{data[i][2]}}
+                </div>
+            </div>
+            <br><br>
+        </div>
+-->
+    {% endif %}
+    </div>
+</div>
+
+
+{% endblock%}

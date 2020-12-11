@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block title%} Login {% endblock %}
+
+{% block head%}
+
+    <link rel="stylesheet" href="{{url_for('static', filename = 'login-page.js')}}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% endblock %}
+    
+{% block content%}
+
+       
+        <form id="login-form" method="POST" action="" >
+          <input type="text" name="username" id="username-field" class="login-form-field" placeholder="Username"/>
+          <input type="password" name="password" id="password-field" class="login-form-field" placeholder="Password"/>
+          <input type="submit" class="btn btn-primary" name="login-button" value="Login"/>
+        </form>
+
+{% endblock %}
+  </body>
+</html>
