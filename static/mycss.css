@@ -15,3 +15,9 @@ h1{
 a.nav-link:hover, a.navbar-brand:hover {
     color:#ac00e6 !important;
 }
+
+ul{
+    margin:0;
+   }
+
+nav ul { margin: 0; }

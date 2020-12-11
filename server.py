@@ -53,9 +53,8 @@ def index(sport_id):
                 db.cursor.execute(query)
                 sport_name = db.cursor.fetchone()
                 if myresult==[]:
-                    print("yok kankam",myresult)
                     yok="Oynamak İsteyen Kimse yok"
-                    return render_template('index.html',yok=yok,username=username,sport_ids=sport_id)
+                    return render_template('index.html',yok=yok,username=username,sport_ids=sport_id,sport_name=sport_name)
                 return render_template('index.html',len=len(myresult),data=myresult,username=username,sport_ids=sport_id,sport_name=sport_name)
             else:
                 return redirect(url_for("sports"))
