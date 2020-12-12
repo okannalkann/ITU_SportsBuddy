@@ -97,21 +97,22 @@ def contact(sport_id,user_name,user_surname):
         print("alkanoooooo")
         if 'user' in session:
             username = session['user']
+            SUser_id = session['user_id']
+            query="SELECT mydb.sports.sport_name FROM mydb.sports WHERE mydb.sports.sport_id= " + str(sport_id)
+            db.cursor.execute(query)
+            sport_name = db.cursor.fetchone()
             if request.method == "GET": #return values for button 
-                query="SELECT mydb.sports.sport_name FROM mydb.sports WHERE mydb.sports.sport_id= " + str(sport_id)
-                db.cursor.execute(query)
-                sport_name = db.cursor.fetchone()
                 print("alkanoooooo")
                 query="""SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_sports.User_description FROM mydb.users
                     LEFT JOIN mydb.user_want_to_play_sports ON mydb.users.user_id = mydb.user_want_to_play_sports.Users_user_id
                     LEFT JOIN mydb.sports ON mydb.user_want_to_play_sports.Sports_sport_id  = sports.sport_id
                     WHERE mydb.users.user_findingFriend = 1 and mydb.sports.sport_id = """ + str(sport_id)
 
-                query += " and mydb.users.user_name = " +  '"' +str(user_name)+'"'
-                query +=" and mydb.users.user_surname = " + '"' +str(user_surname)+'"'
+                query += " and mydb.users.user_id = " +  str(SUser_id) # USer_id yanlis geliyor sessiondaki id ile aynı degilse patlıyo
                 print(query)
                 db.cursor.execute(query)
                 myresult = db.cursor.fetchone()
+                print(myresult)
                 return render_template('contact.html',data=myresult,username=username,sport_name=sport_name)
             else:
                 return redirect(url_for("contact"))
