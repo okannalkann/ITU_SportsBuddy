@@ -6,3 +6,7 @@ Flask web framework
 MySQL database
 JavaScript
 CSS
+
+
+Yorum ekleme özelliği eklendi.
+Yeni İstek ekleme özelliği eklendi.
