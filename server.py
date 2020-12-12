@@ -13,7 +13,10 @@ def home_page():
     try:
         if 'user' in session:
             username = session['user']
-            return render_template('home.html',username=username)
+            query="SELECT * FROM mydb.users"
+            db.cursor.execute(query)
+            myresult = db.cursor.fetchall()
+            return render_template('home.html',len=len(myresult), username=username)
         else:
             return redirect(url_for("login",haveto="You have to sign in"))
     except:
@@ -101,11 +104,6 @@ def contact(sport_id,id_User_want_to_play_sports):
             query="SELECT mydb.sports.sport_name FROM mydb.sports WHERE mydb.sports.sport_id= " + str(sport_id)
             db.cursor.execute(query)
             sport_name = db.cursor.fetchone()
-            
-            User_idQuery= "SELECT * FROM mydb.user_want_to_play_sports WHERE mydb.user_want_to_play_sports.id_User_want_to_play_sports = " + str(id_User_want_to_play_sports)
-            db.cursor.execute(User_idQuery)
-            User_Info = db.cursor.fetchone()
-            Want_user_id=User_Info[2]
 
             if request.method == "GET": #return values for button 
                 query="""SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_sports.User_description  FROM mydb.user_want_to_play_sports 
@@ -143,6 +141,33 @@ def contact(sport_id,id_User_want_to_play_sports):
             return redirect(url_for("login",haveto="You have to sign in"))
     except:
         print("contact hata")
+
+@app.route('/profile', methods=['GET','POST'])
+def profile():
+    try:
+        if 'user' in session:
+            username = session['user'] 
+            user_id = session['user_id']
+            if request.method =="GET": #return values for button      
+                query = "SELECT * FROM mydb.users where mydb.users.user_id= " + str(user_id)
+                db.cursor.execute(query)
+                myresult = db.cursor.fetchone()
+                return render_template('profile.html',data=myresult,username=username)
+            else:
+                if request.form.get("edit_profile"):
+                    name = request.form["name"]
+                    surname = request.form["surname"]
+                    school_number = request.form["school_number"]
+                    email = request.form["email"]
+                    query= " UPDATE mydb.users SET user_name= '" + str(name)+ "', user_surname= '"+ str(surname)+"', user_schoolNumber = '"+str(school_number)+"', user_email = '"+ str(email) +"' WHERE (user_id = '"+str(user_id)+"') "
+                    db.cursor.execute(query)
+                    db.con.commit()
+                    return redirect(url_for("profile"))
+        else:
+            return redirect(url_for("login",haveto="You have to sign in"))
+    except:
+        print("Sport Sayfa hatası")
+
 
 
 @app.route('/login', methods=['GET','POST'])

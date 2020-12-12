@@ -1,5 +1,9 @@
+html {
+  height: 100%;
+}
 body {
     font-family: 'Calibri'; 
+    height: 100%;
 }
 
 p{
@@ -7,6 +11,8 @@ p{
 }
 footer{
     text-align: center;
+    position: fixed;
+    bottom: 0;
 }
 h1{
     text-align: center;
@@ -103,3 +109,4 @@ nav ul { margin: 0; }
     padding: 5px;
     text-align: left;
   }
+
