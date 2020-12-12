@@ -2,15 +2,34 @@
 {% block title%} Index {% endblock %}
 {% block username %}  <p>{{username}}</p> {% endblock %}
 {% block content%}
-
+<div id="topof">
 <h1 style="color:white;"><b> {{ sport_name[0]}}</b> </h1>
 
 {% if yok%}
 <h1 style="color:white;"><b> {{yok}}</b> </h1>
 {% endif%}
 
-
-
+      <div class="openBtn">
+        <button class="openButton" onclick="openForm()"><strong>Add new request</strong></button>
+      </div>
+      
+      </div>
+      <div class="loginPopup">
+        <div class="formPopup" id="popupForm">
+        <!--/sports/{{sport_ids}}-->
+          <form action="/sports/{{sport_ids}}" method="POST" class="formContainer">
+            <h2>Enter Description your request</h2>
+            <label for="email">
+              <strong>Description</strong>
+            </label>
+            <textarea name="email" id="email" rows="10" cols="30" placeholder="Specify Your Request" required></textarea>
+            <!--<input type="hidden" id="email" placeholder="Specify Your Request" name="email" required>-->
+            <input type="submit" name="add_request" class="btn">Send</button>
+            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+          </form>
+        </div>
+      </div>
+<h2 style="color:red; text-align:center;">{{haveto}}</h3>
 <div class="container">
     <div class="row" style="padding-top:20px;">
     {% if data%}
@@ -43,5 +62,12 @@
     </div>
 </div>
 
-
+    <script>
+      function openForm() {
+        document.getElementById("popupForm").style.display = "block";
+      }
+      function closeForm() {
+        document.getElementById("popupForm").style.display = "none";
+      }
+    </script>
 {% endblock%}

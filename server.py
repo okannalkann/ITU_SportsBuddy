@@ -41,6 +41,10 @@ def index(sport_id):
     try:
         if 'user' in session:
             username = session['user']
+            Session_user_id = session['user_id']
+            query="SELECT mydb.sports.sport_name FROM mydb.sports WHERE mydb.sports.sport_id= " + str(sport_id)
+            db.cursor.execute(query)
+            sport_name = db.cursor.fetchone()
             if request.method == "GET": #return values for button 
                 query =""" 
                     SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_sports.User_description FROM mydb.users
@@ -49,14 +53,37 @@ def index(sport_id):
                     WHERE mydb.users.user_findingFriend = 1 and mydb.sports.sport_id = """
                 db.cursor.execute(query + str(sport_id))
                 myresult = db.cursor.fetchall()
-                query="SELECT mydb.sports.sport_name FROM mydb.sports WHERE mydb.sports.sport_id= " + str(sport_id)
-                db.cursor.execute(query)
-                sport_name = db.cursor.fetchone()
+                
                 if myresult==[]:
-                    yok="Oynamak İsteyen Kimse yok"
+                    yok="Nobody Wanted to Play :("
                     return render_template('index.html',yok=yok,username=username,sport_ids=sport_id,sport_name=sport_name)
                 return render_template('index.html',len=len(myresult),data=myresult,username=username,sport_ids=sport_id,sport_name=sport_name)
+            
             else:
+                if request.form.get("add_request"):
+                    user_description = request.form["email"] #request description
+                    checkQuery="SELECT * FROM mydb.user_want_to_play_sports WHERE mydb.user_want_to_play_sports.users_user_id = " + str(Session_user_id)
+                    checkQuery += " and mydb.user_want_to_play_sports.sports_sport_id = " + str(sport_id)
+                    db.cursor.execute(checkQuery)
+                    IsRecordExist = db.cursor.fetchone()
+                    if IsRecordExist == None:  # add new sport request 
+                        query="INSERT INTO mydb.user_want_to_play_sports (User_description, users_user_id, sports_sport_id) VALUES (%s,%s,%s)"
+                        val = (user_description,Session_user_id,sport_id)
+                        db.cursor.execute(query, val) #added the database
+                        db.con.commit()
+                    else: # if this else run this mean user already create sport request for this sport.
+                          # He can not again more than one spor request 
+                        query =""" 
+                            SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_sports.User_description FROM mydb.users
+                            LEFT JOIN mydb.user_want_to_play_sports ON mydb.users.user_id = mydb.user_want_to_play_sports.Users_user_id
+                            LEFT JOIN mydb.sports ON mydb.user_want_to_play_sports.Sports_sport_id  = sports.sport_id
+                            WHERE mydb.users.user_findingFriend = 1 and mydb.sports.sport_id = """
+                        db.cursor.execute(query + str(sport_id))
+                        myresult = db.cursor.fetchall()
+                        return render_template('index.html',len=len(myresult),data=myresult,username=username,sport_ids=sport_id,sport_name=sport_name,haveto="You already created request.")
+
+                    
+
                 return redirect(url_for("sports"))
         else:
             return redirect(url_for("login",haveto="You have to sign in"))
@@ -112,6 +139,7 @@ def login():
                     
                     if Logincheck[5] == user_password:
                         session["user"] = Logincheck[1]
+                        session["user_id"] = Logincheck[0]
                         # return render_template('home.html',len=1,data=[1,2],table_name="Sports",username= session["user"])
                         return redirect(url_for("home_page"))
 
