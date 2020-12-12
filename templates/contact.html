@@ -18,19 +18,72 @@
                     {{data[0]}} {{data[1]}}
                 </div>
                 <div class="card-body">
-                    <p class="card-text">{{data[3]}}</p>
-                    <a href="/sports/{{sport_ids}}/{{data[0]}}_{{data[1]}}" class="btn btn-warning btn-lg">İletişim Kur</a>
+                    <table class="table-sm mx-auto" style="width:50%;">
+                        <tr>
+                            <th>Description:</th>
+                            <td><p class="card-text">{{data[2]}}</td>
+                        </tr>
+                        <tr>
+                            <th>E-mail</p></th>
+                            <td><p class="card-text">{{data[3]}}</p></td>
+                        </tr>
+                    </table>
+                    <br>
+                    <div class="openBtn mx-auto" >
+                        <button class="openButton"  onclick="openForm()"><strong>Send comment</strong></button>
+                    </div>
+                        <div class="loginPopup">
+                            <div class="formPopup" id="popupForm">
+                            <!--/sports/{{sport_ids}}-->
+                            <form action="" method="POST" class="formContainer">
+                                <h2>Enter your comment </h2>
+                                <label for="email">
+                                <strong>Description</strong>
+                                </label>
+                                <textarea name="email" id="email" rows="10" cols="30" placeholder="Specify Your Request" required></textarea>
+                                <!--<input type="hidden" id="email" placeholder="Specify Your Request" name="email" required>-->
+                                <input type="submit" name="add_comment" class="btn" Value="Send"></button>
+                                <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                            </form>
+                            </div>
+                        </div>
                 </div>
                 <div class="card-footer text-muted">
-                {{data[2]}}
                 </div>
             </div>
             <br><br>
         </div>
 
     {% endif %}
+    {% if RequestAnswer %}
+         {% for i in range(0, lenRequestAnswer) %}
+                <div class="col-lg-12">
+                    <div class="card text-center">
+                          <div class="card-header">
+                            <img class="mr-3" style="float:left;" src="{{ url_for('static', filename='/images/user.jpg')}}" height="64px" width="64px" alt="Generic placeholder image">
+                            <p style="float:left; padding-top:25px;">{{RequestAnswer[i][1]}} {{RequestAnswer[i][2]}}</p>
+                          </div>
+                          <div class="card-body">
+                            <div class="media">
+                              <div class="media-body">
+                                <p class="card-text">{{RequestAnswer[i][0]}}</p>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                    <br>
+                </div>
+            {% endfor %}
+    {% endif %}
     </div>
 </div>
 
-
+    <script>
+      function openForm() {
+        document.getElementById("popupForm").style.display = "block";
+      }
+      function closeForm() {
+        document.getElementById("popupForm").style.display = "none";
+      }
+    </script>
 {% endblock%}

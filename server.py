@@ -47,7 +47,7 @@ def index(sport_id):
             sport_name = db.cursor.fetchone()
             if request.method == "GET": #return values for button 
                 query =""" 
-                    SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_sports.User_description FROM mydb.users
+                    SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_sports.User_description, mydb.users.user_id FROM mydb.users
                     LEFT JOIN mydb.user_want_to_play_sports ON mydb.users.user_id = mydb.user_want_to_play_sports.Users_user_id
                     LEFT JOIN mydb.sports ON mydb.user_want_to_play_sports.Sports_sport_id  = sports.sport_id
                     WHERE mydb.users.user_findingFriend = 1 and mydb.sports.sport_id = """
@@ -74,7 +74,7 @@ def index(sport_id):
                     else: # if this else run this mean user already create sport request for this sport.
                           # He can not again more than one spor request 
                         query =""" 
-                            SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_sports.User_description FROM mydb.users
+                            SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_sports.User_description, mydb.users.user_id FROM mydb.users
                             LEFT JOIN mydb.user_want_to_play_sports ON mydb.users.user_id = mydb.user_want_to_play_sports.Users_user_id
                             LEFT JOIN mydb.sports ON mydb.user_want_to_play_sports.Sports_sport_id  = sports.sport_id
                             WHERE mydb.users.user_findingFriend = 1 and mydb.sports.sport_id = """
@@ -91,31 +91,55 @@ def index(sport_id):
         print("index hata")
 
 
-@app.route('/sports/<int:sport_id>/<string:user_name>_<string:user_surname>', methods=['GET','POST'])
-def contact(sport_id,user_name,user_surname):
+@app.route('/sports/<int:sport_id>/<int:id_User_want_to_play_sports>', methods=['GET','POST'])
+def contact(sport_id,id_User_want_to_play_sports):
     try:
-        print("alkanoooooo")
         if 'user' in session:
             username = session['user']
-            SUser_id = session['user_id']
+            Session_user_id = session['user_id']
             query="SELECT mydb.sports.sport_name FROM mydb.sports WHERE mydb.sports.sport_id= " + str(sport_id)
             db.cursor.execute(query)
             sport_name = db.cursor.fetchone()
+            
+            User_idQuery= "SELECT * FROM mydb.user_want_to_play_sports WHERE mydb.user_want_to_play_sports.id_User_want_to_play_sports = " + str(id_User_want_to_play_sports)
+            db.cursor.execute(User_idQuery)
+            User_Info = db.cursor.fetchone()
+            Want_user_id=User_Info[2]
+
             if request.method == "GET": #return values for button 
-                print("alkanoooooo")
-                query="""SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_sports.User_description FROM mydb.users
+                query="""SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_sports.User_description, mydb.users.user_id FROM mydb.users
                     LEFT JOIN mydb.user_want_to_play_sports ON mydb.users.user_id = mydb.user_want_to_play_sports.Users_user_id
                     LEFT JOIN mydb.sports ON mydb.user_want_to_play_sports.Sports_sport_id  = sports.sport_id
-                    WHERE mydb.users.user_findingFriend = 1 and mydb.sports.sport_id = """ + str(sport_id)
-
-                query += " and mydb.users.user_id = " +  str(SUser_id) # USer_id yanlis geliyor sessiondaki id ile aynı degilse patlıyo
-                print(query)
+                    WHERE mydb.users.user_findingFriend = 1 and mydb.sports.sport_id = """ + str(sport_id) + """
+                    and mydb.user_want_to_play_sports.id_User_want_to_play_sports = """ +  str(Want_user_id) # USer_id yanlis geliyor sessiondaki id ile aynı degilse patlıyo
                 db.cursor.execute(query)
                 myresult = db.cursor.fetchone()
-                print(myresult)
-                return render_template('contact.html',data=myresult,username=username,sport_name=sport_name)
+                print("Myresult", myresult)
+                query =""" 
+                    SELECT mydb.sport_request_messages.request_messages, mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email  FROM mydb.sport_request_messages 
+                    LEFT JOIN mydb.users ON mydb.sport_request_messages.users_user_id = mydb.users.user_id
+                    WHERE mydb.sport_request_messages.user_want_to_play_sports_id_User_want_to_play_sports = """+str(id_User_want_to_play_sports) +""" 
+                    and mydb.users.user_findingFriend = 1 """
+                db.cursor.execute(query)
+                mycomment = db.cursor.fetchall()
+
+                if mycomment ==[]:
+                    print("Mycomment is empty")
+                    return render_template('contact.html',data=myresult,username=username,sport_ids=sport_id,sport_name=sport_name,haveto="You already created request.",wantid=id_User_want_to_play_sports)
+                else:
+                    print("Mycomment is not empty")
+                    return render_template('contact.html',data=myresult,lenRequestAnswer=len(mycomment),RequestAnswer=mycomment,username=username,sport_ids=sport_id,sport_name=sport_name,haveto="You already created request.",wantid=id_User_want_to_play_sports)
             else:
-                return redirect(url_for("contact"))
+                if request.form.get("add_comment"):
+                    print("Db ye eklendi")
+                    user_description = request.form["email"] #request 
+                    query="INSERT INTO mydb.sport_request_messages ( request_messages, user_want_to_play_sports_id_User_want_to_play_sports, users_user_id, sports_sport_id) VALUES (%s,%s,%s, %s)"
+                    val = (user_description,id_User_want_to_play_sports,Session_user_id,sport_id)
+                    print("Db ye eklendi", query, val)
+                    db.cursor.execute(query, val) #added the database
+                    db.con.commit()
+                    print("Db ye eklendi")
+            
         else:
             return redirect(url_for("login",haveto="You have to sign in"))
     except:

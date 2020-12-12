@@ -32,7 +32,7 @@ nav ul { margin: 0; }
   .openButton {
     border: none;
     border-radius: 5px;
-    background-color: #1c87c9;
+    background-color: #ac00e6;
     color: white;
     padding: 14px 20px;
     cursor: pointer;
@@ -46,14 +46,14 @@ nav ul { margin: 0; }
   .formPopup {
     display: none;
     position: fixed;
-    left: 45%;
+    left: 50%;
     top: 5%;
     transform: translate(-50%, 5%);
     border: 3px solid #999999;
     z-index: 9;
   }
   .formContainer {
-    max-width: 300px;
+    max-width: 900px;
     padding: 20px;
     background-color: #fff;
   }
@@ -86,4 +86,20 @@ nav ul { margin: 0; }
   .formContainer .btn:hover,
   .openButton:hover {
     opacity: 1;
+  }
+
+  .openBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+  }
+
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 5px;
+    text-align: left;
   }

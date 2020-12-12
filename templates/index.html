@@ -8,11 +8,10 @@
 {% if yok%}
 <h1 style="color:white;"><b> {{yok}}</b> </h1>
 {% endif%}
-
-      <div class="openBtn">
-        <button class="openButton" onclick="openForm()"><strong>Add new request</strong></button>
+      <div class="openBtn mx-auto" >
+        <button class="openButton"  onclick="openForm()"><strong>Add new request</strong></button>
       </div>
-      
+ 
       </div>
       <div class="loginPopup">
         <div class="formPopup" id="popupForm">
@@ -24,43 +23,39 @@
             </label>
             <textarea name="email" id="email" rows="10" cols="30" placeholder="Specify Your Request" required></textarea>
             <!--<input type="hidden" id="email" placeholder="Specify Your Request" name="email" required>-->
-            <input type="submit" name="add_request" class="btn">Send</button>
+            <input type="submit" name="add_request" class="btn" Value="Send"></button>
             <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
           </form>
         </div>
       </div>
-<h2 style="color:red; text-align:center;">{{haveto}}</h3>
-<div class="container">
-    <div class="row" style="padding-top:20px;">
-    {% if data%}
-        {% for i in range(0, len) %}
-            <div class="col-lg-12">
-                <div class="card text-center">
-                    <div class="card-header">
-                      <img class="mr-3" style="float:left;" src="{{ url_for('static', filename='/images/user.jpg')}}" height="64px" width="64px" alt="Generic placeholder image">
-                      <p style="float:left; padding-top:25px;">{{data[i][0]}} {{data[i][1]}}</p>
-                    </div>
-                    <div class="card-body">
-                      <div class="media">
-                        
-                        <div class="media-body">
-                          <!--<h5 class="mt-0" style="float:left; padding-top:50px;">{{data[i][0]}}{{data[i][1]}}</h5>-->
-                          <p class="card-text">{{data[i][3]}}</p>
-                          <a href="/sports/{{sport_ids}}/{{data[i][0]}}_{{data[i][1]}}" class="btn btn-warning btn-lg">İletişim Kur</a>
-                        </div>
-                      </div>
-                      
-                    </div>
-                </div>
-                <br><br>
-            </div>
-        
-          
 
-        {% endfor %}
-    {% endif %}
-    </div>
-</div>
+      <h2 style="color:red; text-align:center;">{{haveto}}</h3>
+      <div class="container">
+          <div class="row" style="padding-top:20px;">
+          {% if data%}
+              {% for i in range(0, len) %}
+                  <div class="col-lg-12">
+                      <div class="card text-center">
+                          <div class="card-header">
+                            <img class="mr-3" style="float:left;" src="{{ url_for('static', filename='/images/user.jpg')}}" height="64px" width="64px" alt="Generic placeholder image">
+                            <p style="float:left; padding-top:25px;">{{data[i][0]}} {{data[i][1]}}</p>
+                          </div>
+                          <div class="card-body">
+                            <div class="media">
+                              <div class="media-body">
+                                <p class="card-text">{{data[i][3]}}</p>
+                                <a href="/sports/{{sport_ids}}/{{data[i][4]}}" class="btn btn-warning btn-lg">Contact</a>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                      <!-- user_id ile ilgili bilgiler gönderilicek-->
+                      <br><br>
+                  </div>
+              {% endfor %}
+          {% endif %}
+          </div>
+      </div>
 
     <script>
       function openForm() {
