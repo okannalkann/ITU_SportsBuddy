@@ -47,7 +47,7 @@ def index(sport_id):
             sport_name = db.cursor.fetchone()
             if request.method == "GET": #return values for button 
                 query =""" 
-                    SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_sports.User_description, mydb.users.user_id FROM mydb.users
+                    SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_sports.User_description, mydb.user_want_to_play_sports.id_User_want_to_play_sports FROM mydb.users
                     LEFT JOIN mydb.user_want_to_play_sports ON mydb.users.user_id = mydb.user_want_to_play_sports.Users_user_id
                     LEFT JOIN mydb.sports ON mydb.user_want_to_play_sports.Sports_sport_id  = sports.sport_id
                     WHERE mydb.users.user_findingFriend = 1 and mydb.sports.sport_id = """
@@ -57,6 +57,7 @@ def index(sport_id):
                 if myresult==[]:
                     yok="Nobody Wanted to Play :("
                     return render_template('index.html',yok=yok,username=username,sport_ids=sport_id,sport_name=sport_name)
+                print("adasd",myresult)
                 return render_template('index.html',len=len(myresult),data=myresult,username=username,sport_ids=sport_id,sport_name=sport_name)
             
             else:
@@ -107,19 +108,16 @@ def contact(sport_id,id_User_want_to_play_sports):
             Want_user_id=User_Info[2]
 
             if request.method == "GET": #return values for button 
-                query="""SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_sports.User_description, mydb.users.user_id FROM mydb.users
-                    LEFT JOIN mydb.user_want_to_play_sports ON mydb.users.user_id = mydb.user_want_to_play_sports.Users_user_id
-                    LEFT JOIN mydb.sports ON mydb.user_want_to_play_sports.Sports_sport_id  = sports.sport_id
-                    WHERE mydb.users.user_findingFriend = 1 and mydb.sports.sport_id = """ + str(sport_id) + """
-                    and mydb.user_want_to_play_sports.id_User_want_to_play_sports = """ +  str(Want_user_id) # USer_id yanlis geliyor sessiondaki id ile aynı degilse patlıyo
+                query="""SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_sports.User_description  FROM mydb.user_want_to_play_sports 
+                    LEFT JOIN mydb.users ON mydb.user_want_to_play_sports.users_user_id = mydb.users.user_id
+                    WHERE  mydb.users.user_findingFriend = 1 and mydb.user_want_to_play_sports.id_User_want_to_play_sports = """+ str(id_User_want_to_play_sports) # USer_id yanlis geliyor sessiondaki id ile aynı degilse patlıyo
                 db.cursor.execute(query)
                 myresult = db.cursor.fetchone()
                 print("Myresult", myresult)
                 query =""" 
                     SELECT mydb.sport_request_messages.request_messages, mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email  FROM mydb.sport_request_messages 
                     LEFT JOIN mydb.users ON mydb.sport_request_messages.users_user_id = mydb.users.user_id
-                    WHERE mydb.sport_request_messages.user_want_to_play_sports_id_User_want_to_play_sports = """+str(id_User_want_to_play_sports) +""" 
-                    and mydb.users.user_findingFriend = 1 """
+                    WHERE mydb.sport_request_messages.user_want_to_play_sports_id_User_want_to_play_sports = """+str(id_User_want_to_play_sports)
                 db.cursor.execute(query)
                 mycomment = db.cursor.fetchall()
 
@@ -139,6 +137,7 @@ def contact(sport_id,id_User_want_to_play_sports):
                     db.cursor.execute(query, val) #added the database
                     db.con.commit()
                     print("Db ye eklendi")
+                    return redirect(url_for("contact",sport_id=sport_id,id_User_want_to_play_sports=id_User_want_to_play_sports))
             
         else:
             return redirect(url_for("login",haveto="You have to sign in"))
