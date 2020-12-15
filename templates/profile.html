@@ -36,37 +36,46 @@
                     </table>
                     <br>
                     <div class="openBtn mx-auto" >
-                        <button class="openButton"  onclick="openForm()"><strong>Edit Profile</strong></button>
+                        <div id="b2" >
+                            <form action="" method="POST">
+                               <div style="float:left;">
+                               <strong><input type="submit" name="change_findfriend" id="change_findfriend" Value="Find Friend"></strong >
+                               </div>
+                            </form>
+                               <button class="openButton" style="margin-left:20px;" onclick="openForm()"><strong>Edit Profile</strong></button>
+                            
+                        </div>
                     </div>
                         <div class="loginPopup">
                             <div class="formPopup" id="popupForm">
-                            <!--/sports/{{sport_ids}}-->
-                            <form action="" method="POST" class="formContainer">
-                                <label for="email">
-                                <strong>Name</strong>
-                                </label>
-                                <input type="text" name="name" id="email" placeholder="{{data[1]}}" required>
-                                <label for="email">
-                                <strong>Surname</strong>
-                                </label>
-                                <input type="text" name="surname" id="surname" placeholder="{{data[2]}}" required>
-                                <label for="email">
-                                <strong>School Number</strong>
-                                </label>
-                                <input type="text" name="school_number" id="school_number" placeholder="{{data[3]}}" required>
-                                <label for="email">
-                                <strong>E-Mail</strong>
-                                </label>
-                                <input type="text" name="email" id="email" placeholder="{{data[4]}}" required>
-                                <!--<input type="hidden" id="email" placeholder="Specify Your Request" name="email" required>-->
-                                <input type="submit" name="edit_profile" class="btn" Value="Send"></button>
-                                <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-                            </form>
+                                <form action="" method="POST" class="formContainer">
+                                    <label for="email">
+                                    <strong>Name</strong>
+                                    </label>
+                                    <input type="text" name="name" id="email" placeholder="{{data[1]}}" required>
+                                    <label for="email">
+                                    <strong>Surname</strong>
+                                    </label>
+                                    <input type="text" name="surname" id="surname" placeholder="{{data[2]}}" required>
+                                    <label for="email">
+                                    <strong>School Number</strong>
+                                    </label>
+                                    <input type="text" name="school_number" id="school_number" placeholder="{{data[3]}}" required>
+                                    <label for="email">
+                                    <strong>E-Mail</strong>
+                                    </label>
+                                    <input type="text" name="email" id="email" placeholder="{{data[4]}}" required>
+                                    <input type="submit" name="edit_profile" class="btn" Value="Send">
+                                    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                                </form>
                             </div>
                         </div>
                 </div>
+                {% if ff_send %}
                 <div class="card-footer text-muted">
+                    Finding Friend : <span style="color:red; ">{{ff_send}}</span>
                 </div>
+                {% endif %}
             </div>
             <br><br>
         </div>

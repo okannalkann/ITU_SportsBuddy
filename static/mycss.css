@@ -91,7 +91,7 @@ nav ul { margin: 0; }
   }
   .formContainer .btn:hover,
   .openButton:hover {
-    opacity: 1;
+    opacity: 0.75;
   }
 
   .openBtn{
@@ -110,3 +110,19 @@ nav ul { margin: 0; }
     text-align: left;
   }
 
+#change_findfriend
+{
+  display: flex;
+  justify-content: left;
+
+  border: none;
+  border-radius: 5px;
+  background-color: #ac00e6;
+  color: white;
+  padding: 14px 20px;
+  cursor: pointer;
+  position: flex;
+}
+#change_findfriend:hover {
+  opacity: 0.75;
+}

@@ -99,6 +99,7 @@ def index(sport_id):
 def contact(sport_id,id_User_want_to_play_sports):
     try:
         if 'user' in session:
+
             username = session['user']
             Session_user_id = session['user_id']
             query="SELECT mydb.sports.sport_name FROM mydb.sports WHERE mydb.sports.sport_id= " + str(sport_id)
@@ -148,20 +149,38 @@ def profile():
         if 'user' in session:
             username = session['user'] 
             user_id = session['user_id']
+            query = "SELECT * FROM mydb.users where mydb.users.user_id= " + str(user_id)
+            db.cursor.execute(query)
+            myresult = db.cursor.fetchone()
+            ff = myresult[6]
+            if ff==1:
+                ff_send = "Yes"
+            else:
+                ff_send = "No"
+
             if request.method =="GET": #return values for button      
-                query = "SELECT * FROM mydb.users where mydb.users.user_id= " + str(user_id)
-                db.cursor.execute(query)
-                myresult = db.cursor.fetchone()
-                return render_template('profile.html',data=myresult,username=username)
+                return render_template('profile.html',data=myresult,username=username,ff_send=ff_send)
             else:
                 if request.form.get("edit_profile"):
                     name = request.form["name"]
                     surname = request.form["surname"]
                     school_number = request.form["school_number"]
                     email = request.form["email"]
-                    query= " UPDATE mydb.users SET user_name= '" + str(name)+ "', user_surname= '"+ str(surname)+"', user_schoolNumber = '"+str(school_number)+"', user_email = '"+ str(email) +"' WHERE (user_id = '"+str(user_id)+"') "
+                    query= " UPDATE mydb.users SET user_name= '" + str(name)+ "', user_surname= '"+ str(surname)+"', user_schoolNumber = "+str(school_number)+", user_email = '"+ str(email) +"' WHERE (user_id = "+str(user_id)+") "
                     db.cursor.execute(query)
                     db.con.commit()
+                    return redirect(url_for("profile"))
+
+                if request.form.get("change_findfriend"):
+                    if ff==1:
+                        query= " UPDATE mydb.users SET mydb.users.user_findingFriend = 0 WHERE mydb.users.user_id ="+str(user_id)
+                        db.cursor.execute(query)
+                        db.con.commit()
+                        #return redirect(url_for("profile"))
+                    else:
+                        query= " UPDATE mydb.users SET mydb.users.user_findingFriend = 1 WHERE mydb.users.user_id = "+str(user_id)
+                        db.cursor.execute(query)
+                        db.con.commit()
                     return redirect(url_for("profile"))
         else:
             return redirect(url_for("login",haveto="You have to sign in"))
