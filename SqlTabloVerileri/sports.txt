@@ -1,0 +1,8 @@
+INSERT INTO `mydb`.`sports` (`sport_id`, `sport_name`) VALUES ('1', 'Futbol');
+INSERT INTO `mydb`.`sports` (`sport_id`, `sport_name`) VALUES ('2', 'Basketbol');
+INSERT INTO `mydb`.`sports` (`sport_id`, `sport_name`) VALUES ('3', 'Voleybol');
+INSERT INTO `mydb`.`sports` (`sport_id`, `sport_name`) VALUES ('4', 'Tenis');
+INSERT INTO `mydb`.`sports` (`sport_id`, `sport_name`) VALUES ('5', 'Bilardo');
+INSERT INTO `mydb`.`sports` (`sport_id`, `sport_name`) VALUES ('6', 'Boks');
+INSERT INTO `mydb`.`sports` (`sport_id`, `sport_name`) VALUES ('7', 'Bisiklet');
+INSERT INTO `mydb`.`sports` (`sport_id`, `sport_name`) VALUES ('8', 'Langırt');

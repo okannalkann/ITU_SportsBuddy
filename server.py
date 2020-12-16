@@ -176,7 +176,6 @@ def profile():
                         query= " UPDATE mydb.users SET mydb.users.user_findingFriend = 0 WHERE mydb.users.user_id ="+str(user_id)
                         db.cursor.execute(query)
                         db.con.commit()
-                        #return redirect(url_for("profile"))
                     else:
                         query= " UPDATE mydb.users SET mydb.users.user_findingFriend = 1 WHERE mydb.users.user_id = "+str(user_id)
                         db.cursor.execute(query)

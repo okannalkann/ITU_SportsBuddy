@@ -1,0 +1,4 @@
+INSERT INTO `mydb`.`games` (`game_id`, `game_name`) VALUES ('1', 'CS-GO');
+INSERT INTO `mydb`.`games` (`game_id`, `game_name`) VALUES ('2', 'Dota2');
+INSERT INTO `mydb`.`games` (`game_id`, `game_name`) VALUES ('3', 'Lol');
+INSERT INTO `mydb`.`games` (`game_id`, `game_name`) VALUES ('4', 'Fortnite');

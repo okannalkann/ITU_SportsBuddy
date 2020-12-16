@@ -1,0 +1,7 @@
+DELETE FROM `mydb`.`game_has_category` WHERE (`games_game_id` = '1') and (`game_category_cate_id` = '2');
+DELETE FROM `mydb`.`game_has_category` WHERE (`games_game_id` = '1') and (`game_category_cate_id` = '1');
+INSERT INTO `mydb`.`game_has_category` (`games_game_id`, `game_category_cate_id`) VALUES ('1', '1');
+INSERT INTO `mydb`.`game_has_category` (`games_game_id`, `game_category_cate_id`) VALUES ('2', '2');
+INSERT INTO `mydb`.`game_has_category` (`games_game_id`, `game_category_cate_id`) VALUES ('3', '2');
+INSERT INTO `mydb`.`game_has_category` (`games_game_id`, `game_category_cate_id`) VALUES ('4', '6');
+INSERT INTO `mydb`.`game_has_category` (`games_game_id`, `game_category_cate_id`) VALUES ('4', '3');

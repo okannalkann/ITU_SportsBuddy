@@ -1,0 +1,6 @@
+INSERT INTO `mydb`.`game_category` (`cate_id`, `category_name`) VALUES ('1', 'First Person Shooter');
+INSERT INTO `mydb`.`game_category` (`cate_id`, `category_name`) VALUES ('2', 'MOBA');
+INSERT INTO `mydb`.`game_category` (`cate_id`, `category_name`) VALUES ('3', 'Battle Royal');
+INSERT INTO `mydb`.`game_category` (`cate_id`, `category_name`) VALUES ('4', 'Horror');
+INSERT INTO `mydb`.`game_category` (`cate_id`, `category_name`) VALUES ('5', 'RPG');
+INSERT INTO `mydb`.`game_category` (`cate_id`, `category_name`) VALUES ('6', 'Third Person Shooter');
