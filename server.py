@@ -225,6 +225,7 @@ def login():
     except:
         print("Login Error")
 
+
 @app.route("/logout")
 def logout():
     session.pop("user", None) #logout

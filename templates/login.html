@@ -9,13 +9,74 @@
     
 {% block content%}
 
+    <div class="col-lg-2"  style="margin: auto; position:flex; display:flex;">
       <h1 style="color:red;">{{haveto}}</h1>
-        <form id="login-form" method="POST" action="" >
-          <input type="text" name="username" id="username-field" class="login-form-field" placeholder="Username"/>
-          <input type="password" name="password" id="password-field" class="login-form-field" placeholder="Password"/>
-          <input type="submit" class="btn btn-primary" name="login-button" value="Login"/>
-        </form>
+      <div class="card text-center">
+        <div class="card-header">
+            Sign Up
+        </div>
+        <div class="card-body">
+              <div id="b2" >
+                <div style="float:left;">
+                  <form id="login-form" method="POST" action="" >
+                    <label for="username-field">
+                      <strong>E-mail</strong>
+                    </label>
+                    <p class="card-text"><input type="text" name="username" id="username-field" class="login-form-field" placeholder="Username"/></p>
+                    <label for="username-field">
+                      <strong>Password</strong>
+                    </label>
+                    <p class="card-text"><input type="password" name="password" id="password-field" class="login-form-field" placeholder="Password"/></p>
+                    <input type="submit" class="openLogin" style="margin-left:20px;" name="login-button" value="Login"/>
+                  </form>
+                </div>
+              </div>
+        </div>
+      </div>  
+    </div>
+      <button class="openLogin" style="margin-left:20px;" onclick="openForm()"><strong>Sign-up</strong></button>
 
+      <div class="loginPopup">
+          <div class="formPopup" id="popupForm">
+              <form action="" method="POST" class="formContainer">
+                  <label for="name">
+                  <strong>Name</strong>
+                  </label>
+                  <input type="text" name="name" id="name" placeholder="name" required>
+                  <label for="surname">
+                  <strong>Surname</strong>
+                  </label>
+                  <input type="text" name="surname" id="surname" placeholder="surname" required>
+                  <label for="school_number">
+                  <strong>School Number</strong>
+                  </label>
+                  <input type="text" name="school_number" id="school_number" placeholder="School Number" required>
+                  <label for="password">
+                  <strong>Password</strong>
+                  </label>
+                  <input type="password" name="password" id="password" placeholder="Password" required>
+                  <label for="cpassword">
+                  <strong>Confirm Password</strong>
+                  </label>
+                  <input type="password" name="cpassword"  id="cpassword" placeholder="Confirm Password" required>
+                  <label for="email">
+                  <strong>E-Mail</strong>
+                  </label>
+                  <input type="text" name="email"  id="email" placeholder="E-mail" required>
+                  <input type="submit" name="sign_up" class="btn" Value="Send">
+                  <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+              </form>
+          </div>
+      </div>
+
+    <script>
+      function openForm() {
+        document.getElementById("popupForm").style.display = "block";
+      }
+      function closeForm() {
+        document.getElementById("popupForm").style.display = "none";
+      }
+    </script>
 {% endblock %}
   </body>
 </html>

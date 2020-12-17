@@ -2,12 +2,10 @@
 {% block title%} Profile {% endblock %}
 {% block username %}  <p>{{username}}</p> {% endblock %}
 {% block content%}
-  
-<div class="mx-auto">
-       {% if data%}
 
-        <div class="col-lg-12">
-            <div class="card text-center">
+    <div class="col-lg-12">
+        {% if data%}
+            <div class="card text-center mx-auto">
                 <div class="card-header">
                     Profile
                 </div>
@@ -38,11 +36,11 @@
                     <div class="openBtn mx-auto" >
                         <div id="b2" >
                             <form action="" method="POST">
-                               <div style="float:left;">
-                               <strong><input type="submit" name="change_findfriend" id="change_findfriend" Value="Find Friend"></strong >
-                               </div>
+                            <div style="float:left;">
+                            <strong><input type="submit" name="change_findfriend" id="change_findfriend" Value="Find Friend"></strong >
+                            </div>
                             </form>
-                               <button class="openButton" style="margin-left:20px;" onclick="openForm()"><strong>Edit Profile</strong></button>
+                            <button class="openButton" style="margin-left:20px;" onclick="openForm()"><strong>Edit Profile</strong></button>
                             
                         </div>
                     </div>
@@ -72,17 +70,15 @@
                         </div>
                 </div>
                 {% if ff_send %}
-                <div class="card-footer text-muted">
-                    Finding Friend : <span style="color:red; ">{{ff_send}}</span>
-                </div>
+                    <div class="card-footer text-muted">
+                        Finding Friend : <span style="color:red; ">{{ff_send}}</span>
+                    </div>
                 {% endif %}
             </div>
-            <br><br>
-        </div>
+        {% endif %}
 
-    {% endif %}
+    </div>
 
-</div>
  <script>
       function openForm() {
         document.getElementById("popupForm").style.display = "block";
