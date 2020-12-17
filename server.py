@@ -8,6 +8,7 @@ app.secret_key = "SportBuddy"
 db = Database("127.0.0.1", 3306, "root", "qwerty123456", "mydb")
 db.con.cursor()    
 
+
 @app.route('/', methods=['GET','POST'])
 def home_page():
     try:
@@ -32,7 +33,10 @@ def sports():
                 query = "SELECT * FROM mydb.sports"
                 db.cursor.execute(query)
                 myresult = db.cursor.fetchall()
-                return render_template('sports.html',len=len(myresult),data=myresult,username=username)
+                myresult2=[]
+                for i in myresult: # converting int to string for void type error
+                    myresult2.append(str(i[0]))
+                return render_template('sports.html',len=len(myresult),data=myresult,data2=myresult2,username=username)
 
         else:
             return redirect(url_for("login",haveto="You have to sign in"))
@@ -188,6 +192,13 @@ def profile():
 
 
 
+@app.route('/profile', methods=['POST'])
+def upload_file():
+    uploaded_file = request.files['file']
+    if uploaded_file.filename != '':
+        uploaded_file.save(uploaded_file.filename)
+    return redirect(url_for('index'))
+
 @app.route('/login', methods=['GET','POST'])
 def login():
     try:
@@ -204,18 +215,42 @@ def login():
             
                 if Logincheck:
                     
-                    if Logincheck[5] == user_password:
+                    if Logincheck[5] == user_password: # check password
                         session["user"] = Logincheck[1]
                         session["user_id"] = Logincheck[0]
                         # return render_template('home.html',len=1,data=[1,2],table_name="Sports",username= session["user"])
                         return redirect(url_for("home_page"))
 
                     else:
-                        print("WRONG PASSWORD")
+                        return render_template("login.html",haveto="Wrong Account")
 
                 else:
-                    print("WRONG USERNAME")
-                    
+                    return render_template("login.html",haveto="Wrong Account")
+
+            if request.form.get("sign_up"):
+                newUser_name = request.form["name"] #take username from website textbox
+                newUser_surname = request.form["surname"] #take password from website textbox
+                newUser_school_number = request.form["school_number"] #take username from website textbox
+                newUser_password = request.form["password"] #take password from website textbox
+                newUser_confirmpassword = request.form["cpassword"] #take username from website textbox
+                newUser_email = request.form["email"] #take password from website textbox
+
+                if newUser_password != newUser_confirmpassword:
+                    return render_template("login.html",haveto="Password Not Matched")
+                
+                query = "SELECT * FROM mydb.users WHERE user_email =\"" + newUser_email + "\""
+                print("ueq",query)
+                db.cursor.execute(query)
+                check_email= db.cursor.fetchone()
+                print("daosdoasd",check_email)
+                if check_email != []:
+                    return render_template("login.html",haveto="This e-mail already registered.")
+                else:
+                    query="INSERT INTO mydb.users (user_name, user_surname, user_schoolNumber, user_email, user_password, user_findingFriend) VALUES (%s,%s,%s,%s,%s,%s)"
+                    val = (newUser_name,newUser_surname,newUser_school_number,newUser_email,newUser_password,"1")
+                    db.cursor.execute(query, val) #added the database
+                    db.con.commit()
+                
         else:
             if "user" in session: #if already logged, redirect
                 user_email=session["user"]

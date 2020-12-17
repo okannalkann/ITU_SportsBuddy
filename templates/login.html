@@ -9,33 +9,32 @@
     
 {% block content%}
 
-    <div class="col-lg-2"  style="margin: auto; position:flex; display:flex;">
-      <h1 style="color:red;">{{haveto}}</h1>
+      {% if haveto %}
+        <h1 style="color:red;">{{haveto}}</h1>
+      {% endif %}
+    <div class="col-2 logincard">
       <div class="card text-center">
         <div class="card-header">
-            Sign Up
+            Sign In
         </div>
         <div class="card-body">
-              <div id="b2" >
-                <div style="float:left;">
-                  <form id="login-form" method="POST" action="" >
-                    <label for="username-field">
-                      <strong>E-mail</strong>
-                    </label>
-                    <p class="card-text"><input type="text" name="username" id="username-field" class="login-form-field" placeholder="Username"/></p>
-                    <label for="username-field">
-                      <strong>Password</strong>
-                    </label>
-                    <p class="card-text"><input type="password" name="password" id="password-field" class="login-form-field" placeholder="Password"/></p>
-                    <input type="submit" class="openLogin" style="margin-left:20px;" name="login-button" value="Login"/>
-                  </form>
-                </div>
-              </div>
+            <form id="login-form" method="POST" action="" >
+              <label for="username-field">
+                <strong>E-mail</strong>
+              </label>
+              <p class="card-text"><input type="text" name="username" id="username-field" class="login-form-field" placeholder="Username"required /></p>
+              <label for="username-field">
+                <strong>Password</strong>
+              </label>
+              <p class="card-text"><input type="password" name="password" id="password-field" class="login-form-field" placeholder="Password" required/></p>
+              <input type="submit" class="openLogin" style="margin-left:20px; float:left;" name="login-button" value="Login"/>
+            </form>
+            <div style="margin:0 auto; ">
+              <button class="openLogin" style="margin-left:20px" onclick="openForm()"><strong>Sign-up</strong></button>
+            </div>
         </div>
       </div>  
     </div>
-      <button class="openLogin" style="margin-left:20px;" onclick="openForm()"><strong>Sign-up</strong></button>
-
       <div class="loginPopup">
           <div class="formPopup" id="popupForm">
               <form action="" method="POST" class="formContainer">

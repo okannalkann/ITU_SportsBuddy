@@ -51,7 +51,16 @@ nav ul { margin: 0; }
     color: white;
     padding: 14px 20px;
     cursor: pointer;
-    position: flex;
+    flex: 50%;
+  }
+  .openLogin2 {
+    border: none;
+    border-radius: 5px;
+    background-color: #ac00e6;
+    color: white;
+    padding: 14px 20px;
+    cursor: pointer;
+    flex: 50%;
   }
   .loginPopup {
     position: relative;
@@ -143,4 +152,11 @@ nav ul { margin: 0; }
 }
 #change_findfriend:hover {
   opacity: 0.75;
+}
+
+
+.logincard{
+  margin:0 auto;
+  justify-content: center;
+  align-items: center;
 }
