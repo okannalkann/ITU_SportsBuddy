@@ -160,3 +160,15 @@ nav ul { margin: 0; }
   justify-content: center;
   align-items: center;
 }
+
+#sport_card:hover{
+  opacity: 0.90;
+  zoom: 0.99;
+  color: #8402af;
+}
+
+#game_card:hover{
+  opacity: 0.90;
+  zoom: 0.99;
+  color: #8402af;
+}

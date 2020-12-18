@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+{% block title%} Index {% endblock %}
+{% block username %}  <p>{{username}}</p> {% endblock %}
+{% block content%}
+<h1 style="color:white;"><b> {{ game_name[0]}}</b> </h1>
+
+{% if yok%}
+<h1 style="color:white;"><b> {{yok}}</b> </h1>
+{% endif%}
+
+<button style="background-color:#ac00e6; color:white; margin: auto; position:flex; display:flex;" class="btn btn-lg" onclick="openForm()">
+    Add new request
+</button>
+
+      <div class="loginPopup">
+        <div class="formPopup" id="popupForm">
+          <form action="" method="POST" class="formContainer">
+            <h2>Enter Description your request</h2>
+            <label for="email">
+              <strong>Description</strong>
+            </label>
+            <textarea name="email" id="email" rows="10" cols="30" placeholder="Specify Your Request" required></textarea>
+            <input type="submit" name="add_request" class="btn" Value="Send"></button>
+            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+          </form>
+        </div>
+      </div>
+
+      <h2 style="color:red; text-align:center;">{{haveto}}</h3>
+      <div class="container">
+          <div class="row" style="padding-top:20px;">
+            {% if data%}
+                {% for i in range(0, len) %}
+                    <div class="col-lg-12">
+                        <div class="card text-center">
+                            <div class="card-header">
+                              <img class="mr-3 align-middle" style="float:left;" src="{{ url_for('static', filename='/images/user.jpg')}}" height="64px" width="64px" alt="Generic placeholder image">
+                              <h4 style="float:left; padding-top:25px;">{{data[i][0]}} {{data[i][1]}}</h4>
+                            </div>
+                            <div class="card-body">
+                              <div class="media">
+                                <div class="media-body" >
+                                  <h4 class="card-text">{{data[i][3]}}</h4>
+                                  <br>
+                                </div>
+                                <br><br>
+                            </div>
+                                <div class="card-footer text-muted">
+                                    <a href="/games/{{game_ids}}/{{data[i][4]}}" style="background-color:#ac00e6; color:white;" class="btn btn-lg">
+                                      Contact
+                                  </a>
+                                </div>
+                              
+                            </div>
+                        </div>
+                        <!-- user_id ile ilgili bilgiler gönderilicek-->
+                        <br><br>
+                    </div>
+                {% endfor %}
+            {% endif %}
+          </div>
+      </div>
+
+    <script>
+      function openForm() {
+        document.getElementById("popupForm").style.display = "block";
+      }
+      function closeForm() {
+        document.getElementById("popupForm").style.display = "none";
+      }
+    </script>
+{% endblock%}

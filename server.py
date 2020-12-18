@@ -44,7 +44,7 @@ def sports():
         print("Sport Sayfa hatası")
 
 @app.route('/sports/<int:sport_id>', methods=['GET','POST'])
-def index(sport_id):
+def sport_index(sport_id):
     try:
         if 'user' in session:
             username = session['user']
@@ -63,9 +63,9 @@ def index(sport_id):
                 
                 if myresult==[]:
                     yok="Nobody Wanted to Play :("
-                    return render_template('index.html',yok=yok,username=username,sport_ids=sport_id,sport_name=sport_name)
+                    return render_template('sport_index.html',yok=yok,username=username,sport_ids=sport_id,sport_name=sport_name)
                 print("adasd",myresult)
-                return render_template('index.html',len=len(myresult),data=myresult,username=username,sport_ids=sport_id,sport_name=sport_name)
+                return render_template('sport_index.html',len=len(myresult),data=myresult,username=username,sport_ids=sport_id,sport_name=sport_name)
             
             else:
                 if request.form.get("add_request"):
@@ -88,15 +88,15 @@ def index(sport_id):
                             WHERE mydb.users.user_findingFriend = 1 and mydb.sports.sport_id = """
                         db.cursor.execute(query + str(sport_id))
                         myresult = db.cursor.fetchall()
-                        return render_template('index.html',len=len(myresult),data=myresult,username=username,sport_ids=sport_id,sport_name=sport_name,haveto="You already created request.")
+                        return render_template('sport_index.html',len=len(myresult),data=myresult,username=username,sport_ids=sport_id,sport_name=sport_name,haveto="You already created request.")
 
                     
 
-                return redirect(url_for("sports"))
+                return redirect(url_for("sport_index",sport_id=sport_id))
         else:
             return redirect(url_for("login",haveto="You have to sign in"))
     except:
-        print("index hata")
+        print("sport_index hata")
 
 
 @app.route('/sports/<int:sport_id>/<int:id_User_want_to_play_sports>', methods=['GET','POST'])
@@ -126,10 +126,10 @@ def contact(sport_id,id_User_want_to_play_sports):
 
                 if mycomment ==[]:
                     print("Mycomment is empty")
-                    return render_template('contact.html',data=myresult,username=username,sport_ids=sport_id,sport_name=sport_name,haveto="You already created request.",wantid=id_User_want_to_play_sports)
+                    return render_template('contact.html',data=myresult,username=username,sport_ids=sport_id,sport_name=sport_name,wantid=id_User_want_to_play_sports)
                 else:
                     print("Mycomment is not empty")
-                    return render_template('contact.html',data=myresult,lenRequestAnswer=len(mycomment),RequestAnswer=mycomment,username=username,sport_ids=sport_id,sport_name=sport_name,haveto="You already created request.",wantid=id_User_want_to_play_sports)
+                    return render_template('contact.html',data=myresult,lenRequestAnswer=len(mycomment),RequestAnswer=mycomment,username=username,sport_ids=sport_id,sport_name=sport_name,wantid=id_User_want_to_play_sports)
             else:
                 if request.form.get("add_comment"):
                     print("Db ye eklendi")
@@ -146,6 +146,127 @@ def contact(sport_id,id_User_want_to_play_sports):
             return redirect(url_for("login",haveto="You have to sign in"))
     except:
         print("contact hata")
+
+
+@app.route('/games', methods=['GET','POST'])
+def games():
+    try:
+        if 'user' in session:
+            username = session['user'] 
+            if request.method =="GET": #return values for button      
+                query = "SELECT * FROM mydb.games"
+                db.cursor.execute(query)
+                myresult = db.cursor.fetchall()
+                myresult2=[]
+                for i in myresult: # converting int to string for void type error
+                    myresult2.append(str(i[0]))
+                return render_template('games.html',len=len(myresult),data=myresult,data2=myresult2,username=username)
+
+        else:
+            return redirect(url_for("login",haveto="You have to sign in"))
+    except:
+        print("Games Sayfa hatası")
+
+
+@app.route('/games/<int:game_id>', methods=['GET','POST'])
+def game_index(game_id):
+    try:
+        if 'user' in session:
+            username = session['user']
+            Session_user_id = session['user_id']
+            query="SELECT mydb.games.game_name FROM mydb.games WHERE mydb.games.game_id= " + str(game_id)
+            db.cursor.execute(query)
+            game_name = db.cursor.fetchone()
+            if request.method == "GET": #return values for button 
+                query =""" 
+                    SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_games.User_description, mydb.user_want_to_play_games.id_user_want_to_play_games FROM mydb.users
+                    LEFT JOIN mydb.user_want_to_play_games ON mydb.users.user_id = mydb.user_want_to_play_games.users_user_id
+                    LEFT JOIN mydb.games ON mydb.user_want_to_play_games.games_game_id  = games.game_id
+                    WHERE mydb.users.user_findingFriend = 1 and mydb.games.game_id = """
+                db.cursor.execute(query + str(game_id))
+                myresult = db.cursor.fetchall()
+                
+                if myresult==[]:
+                    yok="Nobody Wanted to Play :("
+                    return render_template('game_index.html',yok=yok,username=username,game_ids=game_id,game_name=game_name)
+
+                return render_template('game_index.html',len=len(myresult),data=myresult,username=username,game_ids=game_id,game_name=game_name)
+            
+            else:
+                if request.form.get("add_request"):
+                    user_description = request.form["email"] #request description
+                    checkQuery="SELECT * FROM mydb.user_want_to_play_games WHERE mydb.user_want_to_play_games.users_user_id = " + str(Session_user_id)
+                    checkQuery += " and mydb.user_want_to_play_games.games_game_id = " + str(game_id)
+                    db.cursor.execute(checkQuery)
+                    IsRecordExist = db.cursor.fetchone()
+                    if IsRecordExist == None:  # add new game request 
+                        query="INSERT INTO mydb.user_want_to_play_games (User_description, users_user_id, games_game_id) VALUES (%s,%s,%s)"
+                        val = (user_description,Session_user_id,game_id)
+                        db.cursor.execute(query, val) #added the database
+                        db.con.commit()
+                    else: # if this else run this mean user already create game request for this sport.
+                          # He can not again more than one game request 
+                        query =""" 
+                            SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_games.User_description, mydb.users.user_id FROM mydb.users
+                            LEFT JOIN mydb.user_want_to_play_games ON mydb.users.user_id = mydb.user_want_to_play_games.users_user_id
+                            LEFT JOIN mydb.games ON mydb.user_want_to_play_games.games_game_id = games.game_id
+                            WHERE mydb.users.user_findingFriend = 1 and mydb.games.game_id = """
+                        db.cursor.execute(query + str(game_id))
+                        myresult = db.cursor.fetchall()
+                        return render_template('game_index.html',len=len(myresult),data=myresult,username=username,game_ids=game_id,game_name=game_name,haveto="You already created request.")
+
+                    
+
+                return redirect(url_for("game_index",game_id=game_id))
+        else:
+            return redirect(url_for("login",haveto="You have to sign in"))
+    except:
+        print("game_index hata")
+
+
+@app.route('/games/<int:game_id>/<int:id_user_want_to_play_games>', methods=['GET','POST'])
+def game_contact(game_id,id_user_want_to_play_games):
+    try:
+        if 'user' in session:
+            username = session['user']
+            Session_user_id = session['user_id']
+            query="SELECT mydb.games.game_name FROM mydb.games WHERE mydb.games.game_id= " + str(game_id)
+            db.cursor.execute(query)
+            game_name = db.cursor.fetchone()
+            if request.method == "GET": #return values for button 
+                query="""SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_games.User_description  FROM mydb.user_want_to_play_games 
+                    LEFT JOIN mydb.users ON mydb.user_want_to_play_games.users_user_id = mydb.users.user_id
+                    WHERE  mydb.users.user_findingFriend = 1 and mydb.user_want_to_play_games.id_user_want_to_play_games ="""+ str(id_user_want_to_play_games) # USer_id yanlis geliyor sessiondaki id ile aynı degilse patlıyo
+                db.cursor.execute(query)
+                myresult = db.cursor.fetchone()
+
+                query =""" SELECT mydb.games_request_messages.games_request_messages, mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email  FROM mydb.games_request_messages 
+                    LEFT JOIN mydb.users ON mydb.games_request_messages.users_user_id = mydb.users.user_id
+                    WHERE mydb.games_request_messages.user_want_to_play_games_id_user_want_to_play_games = """+str(id_user_want_to_play_games)
+                db.cursor.execute(query)
+                mycomment = db.cursor.fetchall()
+
+                if mycomment ==[]:
+                    print("Mycomment is empty")
+                    return render_template('game_contact.html',data=myresult,username=username,game_name=game_name,wantid=id_user_want_to_play_games)
+                else:
+                    print("Mycomment is not empty")
+                    return render_template('game_contact.html',data=myresult,lenRequestAnswer=len(mycomment),RequestAnswer=mycomment,username=username,game_name=game_name,wantid=id_user_want_to_play_games)
+            else:
+                if request.form.get("add_comment"):
+                    user_description = request.form["email"] #request 
+                    query="INSERT INTO mydb.games_request_messages ( games_request_messages, user_want_to_play_games_id_user_want_to_play_games, users_user_id, games_game_id) VALUES (%s,%s,%s, %s)"
+                    val = (user_description,id_user_want_to_play_games,Session_user_id,game_id)
+                    db.cursor.execute(query, val) #added the database
+                    db.con.commit()
+                    return redirect(url_for("game_contact",game_id=game_id,id_user_want_to_play_games=id_user_want_to_play_games))
+            
+        else:
+            return redirect(url_for("login",haveto="You have to sign in"))
+    except:
+        print("Game Contact hata")
+
+
 
 @app.route('/profile', methods=['GET','POST'])
 def profile():
@@ -197,7 +318,7 @@ def upload_file():
     uploaded_file = request.files['file']
     if uploaded_file.filename != '':
         uploaded_file.save(uploaded_file.filename)
-    return redirect(url_for('index'))
+    return redirect(url_for('sport_index'))
 
 @app.route('/login', methods=['GET','POST'])
 def login():
