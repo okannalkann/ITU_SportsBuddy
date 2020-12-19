@@ -164,8 +164,8 @@ nav ul { margin: 0; }
 #sport_card:hover{
   opacity: 0.90;
   zoom: 0.99;
-  color: #8402af;
 }
+
 
 #game_card:hover{
   opacity: 0.90;
@@ -212,4 +212,7 @@ nav ul { margin: 0; }
   color:#ac00e6;
 }
 
-
+#game_card
+{
+  background-color: aquamarine;
+}
