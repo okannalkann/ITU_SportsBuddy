@@ -2,6 +2,7 @@ from flask import Flask, abort, current_app, render_template, request, session, 
 import mysql.connector
 from flask_mysqldb import MySQL
 from database import Database
+import bcrypt
 
 app = Flask(__name__)
 app.secret_key = "SportBuddy"
@@ -373,11 +374,14 @@ def profile():
                     surname = request.form["surname"]
                     school_number = request.form["school_number"]
                     email = request.form["email"]
-                    pswrd = request.form["password"]
-                    query= " UPDATE mydb.users SET user_name= '" + str(name)+ "', user_surname= '"+ str(surname)+"', user_schoolNumber = "+str(school_number)+", user_email = '"+ str(email) +"', user_password = '"+ str(pswrd) +"' WHERE (user_id = "+str(user_id)+") "
-                    db.cursor.execute(query)
+                    pswrd = request.form["password"].encode('utf-8')
+                    hash_password = bcrypt.hashpw(pswrd,bcrypt.gensalt())
+                    query= (" UPDATE mydb.users SET user_name= %s, user_surname= %s, user_schoolNumber = %s, user_email = %s, user_password = %s WHERE (user_id = %s) ")
+                    val=(name,surname,school_number,email,hash_password,user_id)
+                    db.cursor.execute(query, val) #added the database
                     db.con.commit()
                     return redirect(url_for("profile"))
+                    #query= " UPDATE mydb.users SET user_name= '" + str(name)+ "', user_surname= '"+ str(surname)+"', user_schoolNumber = "+str(school_number)+", user_email = '"+ str(email) +"', user_password = "+ str(hash_password) +" WHERE (user_id = "+str(user_id)+") "
 
                 if request.form.get("change_findfriend"):
                     if ff==1:
@@ -392,7 +396,7 @@ def profile():
         else:
             return redirect(url_for("login",haveto="You have to sign in"))
     except:
-        print("Sport Sayfa hatası")
+        print("Profil Sayfa hatası")
 
 
 
@@ -410,19 +414,16 @@ def login():
             session.permanent = True
             if request.form.get("login-button"):
                 user_email = request.form["username"] #take username from website textbox
-                user_password = request.form["password"] #take password from website textbox
-                
+                user_password = request.form["password"].encode('utf-8') #take password from website textbox
                 query = "SELECT * FROM mydb.users WHERE user_email =\"" + user_email + "\""
                 print(query)
                 db.cursor.execute(query)
                 Logincheck = db.cursor.fetchone()
-            
                 if Logincheck:
-                    
-                    if Logincheck[5] == user_password: # check password
+                    #if Logincheck[5] == user_password: # check password
+                    if bcrypt.hashpw(user_password,Logincheck[5].encode('utf-8') ) == Logincheck[5].encode('utf-8'):
                         session["user"] = Logincheck[1]
                         session["user_id"] = Logincheck[0]
-                        # return render_template('home.html',len=1,data=[1,2],table_name="Sports",username= session["user"])
                         return redirect(url_for("home_page"))
 
                     else:
@@ -435,23 +436,23 @@ def login():
                 newUser_name = request.form["name"] #take username from website textbox
                 newUser_surname = request.form["surname"] #take password from website textbox
                 newUser_school_number = request.form["school_number"] #take username from website textbox
-                newUser_password = request.form["password"] #take password from website textbox
-                newUser_confirmpassword = request.form["cpassword"] #take username from website textbox
+                newUser_password = request.form["password"].encode('utf-8') #take password from website textbox
+                newUser_confirmpassword = request.form["cpassword"].encode('utf-8') #take username from website textbox
                 newUser_email = request.form["email"] #take password from website textbox
-
                 if newUser_password != newUser_confirmpassword:
                     return render_template("login.html",haveto="Password Not Matched")
                 
+                hash_password = bcrypt.hashpw(newUser_password,bcrypt.gensalt())
+                print(str(hash_password))
                 query = "SELECT * FROM mydb.users WHERE user_email =\"" + newUser_email + "\""
-                print("ueq",query)
                 db.cursor.execute(query)
                 check_email= db.cursor.fetchone()
-                print("daosdoasd",check_email)
-                if check_email != []:
+                print(check_email)
+                if check_email != None:
                     return render_template("login.html",haveto="This e-mail already registered.")
                 else:
                     query="INSERT INTO mydb.users (user_name, user_surname, user_schoolNumber, user_email, user_password, user_findingFriend) VALUES (%s,%s,%s,%s,%s,%s)"
-                    val = (newUser_name,newUser_surname,newUser_school_number,newUser_email,newUser_password,"1")
+                    val = (newUser_name,newUser_surname,newUser_school_number,newUser_email,hash_password,"1")
                     db.cursor.execute(query, val) #added the database
                     db.con.commit()
                 
