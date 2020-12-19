@@ -373,7 +373,8 @@ def profile():
                     surname = request.form["surname"]
                     school_number = request.form["school_number"]
                     email = request.form["email"]
-                    query= " UPDATE mydb.users SET user_name= '" + str(name)+ "', user_surname= '"+ str(surname)+"', user_schoolNumber = "+str(school_number)+", user_email = '"+ str(email) +"' WHERE (user_id = "+str(user_id)+") "
+                    pswrd = request.form["password"]
+                    query= " UPDATE mydb.users SET user_name= '" + str(name)+ "', user_surname= '"+ str(surname)+"', user_schoolNumber = "+str(school_number)+", user_email = '"+ str(email) +"', user_password = '"+ str(pswrd) +"' WHERE (user_id = "+str(user_id)+") "
                     db.cursor.execute(query)
                     db.con.commit()
                     return redirect(url_for("profile"))
