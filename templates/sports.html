@@ -7,16 +7,15 @@
       <div class="row" style="padding-top:20px;">
         {% if data%}
             {% for i in range(0, len) %}
-                <div class="col-lg-2">
-                    <div class="card bg-dark mb-2" id="sport_card" style="width: 18rem;">
+                <div class="col-2">
+                    <div class="card bg-dark mb-2" id="sport_card" style="height:25rem; width: 18rem;">
                         <a href="/sports/{{data[i][0]}}">
 
                           <img class="card-img-top mx-auto" style="text-align:center;" src="{{ url_for('static', filename='/images/sports/'+ data2[i]+'.jpg')}}" 
-                            onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/404.jpg')}}'" alt="Card image cap" height="230px" width="130px">
+                            onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/404.jpg')}}'" alt="Card image cap" height="200px" width="130px">
                           
-                          <div class="card-body" style="height:90px;">
-                              <h3 class="card-title text-white">{{data[i][1]}}</h3>
-                              <p class="card-text"></p>
+                          <div class="card-body" style="height:30px;">
+                              <h4 class="card-title text-white">{{data[i][1]}}</h4>
                           </div>
                          </a>
                     </div>

@@ -16,13 +16,13 @@
                 <div id="actiongames">
             {% for i in range(0, lenA) %}
                   <div class="col-lg-2">
-                      <div class="card bg-dark mb-2" id="game_card" style="height:32rem; width:18rem;">
+                      <div class="card bg-dark mb-2" id="game_card" style="height:29rem; width:18rem;">
                           <a href="/games/{{actionGames[i][0]}}">
                             <img class="card-img-top mx-auto" style="text-align:center;" src="{{ url_for('static', filename='/images/games/'+ actionGamesId[i]+'.jpg')}}" 
                               onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/404.jpg')}}'" alt="Card image cap" height="200px" width="130px">
                             
-                            <div class="card-body" style="height:60px;">
-                                <h3 class="card-title text-white">{{actionGames[i][1]}}</h3>
+                            <div class="card-body" style="height:30px;">
+                                <h4 class="card-title text-white">{{actionGames[i][1]}}</h4>
                                 {% if cate %}
                                     <h6 id="homeGameType" class="text-muted">{{cate[i]}}</h6>
                                 {% endif %}
@@ -46,14 +46,14 @@
           <div id="actiongames1">
             {% for i in range(0, lenSp) %}
                 <div class="col-lg-2 mb-2">
-                    <div class="card bg-dark mb-2" id="sport_card" style="width: 18rem;">
+                    <div class="card bg-dark mb-2" id="sport_card" style="height:25rem; width: 18rem;">
                         <a href="/sports/{{SportsTable[i][0]}}">
 
                           <img class="card-img-top mx-auto" style="text-align:center;" src="{{ url_for('static', filename='/images/sports/'+ SportsId[i]+'.jpg')}}" 
                             onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/404.jpg')}}'" alt="Card image cap" height="200px" width="130px">
                           
-                          <div class="card-body" style="height:90px;">
-                              <h3 class="card-title text-white">{{SportsTable[i][1]}}</h3>
+                          <div class="card-body" style="height:30px;">
+                              <h4 class="card-title text-white">{{SportsTable[i][1]}}</h4>
                           </div>
                          </a>
                     </div>
@@ -74,13 +74,13 @@
           <div id="actiongames2">
             {% for i in range(0, lenF) %}
                   <div class="col-lg-2 mb-2">
-                      <div class="card bg-dark" id="game_card" style="height:32rem; width:18rem;">
+                      <div class="card bg-dark" id="game_card" style="height:29rem; width:18rem;">
                           <a href="/games/{{FPSGames[i][0]}}">
                             <img class="card-img-top" src="{{ url_for('static', filename='/images/games/'+ FPSGamesId[i]+'.jpg')}}" 
                             onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/404.jpg')}}'" alt="Card image cap" height="200px" width="130px">
                             
                             <div class="card-body" style="height:30px;">
-                                <h3 class="card-title text-white">{{FPSGames[i][1]}}</h3>
+                                <h4 class="card-title text-white">{{FPSGames[i][1]}}</h4>
                                 {% if FPSArray %}
                                   <h6 id="homeGameType" class="text-muted">{{FPSArray[i]}}</h6>
                                 {% endif %}
@@ -105,13 +105,13 @@
           <div id="actiongames3">
             {% for i in range(0, lenS) %}
                   <div class="col-lg-2 mb-2">
-                      <div class="card bg-dark mb-2" id="game_card" style="height:32rem; width:18rem;">
+                      <div class="card bg-dark mb-2" id="game_card" style="height:29rem; width:18rem;">
                           <a href="/games/{{ShooterGames[i][0]}}">
                             <img class="card-img-top mx-auto" style="text-align:center;" src="{{ url_for('static', filename='/images/games/'+ ShooterGamesId[i]+'.jpg')}}" 
                               onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/404.jpg')}}'" alt="Card image cap" height="200px" width="130px">
                             
                             <div class="card-body" style="height:30px;">
-                                <h3 class="card-title text-white">{{ShooterGames[i][1]}}</h3>
+                                <h4 class="card-title text-white">{{ShooterGames[i][1]}}</h4>
                                 {% if ShooterArray %}
                                   <h6 id="homeGameType" class="text-muted">{{ShooterArray[i]}}</h6>
                                 {% endif %}

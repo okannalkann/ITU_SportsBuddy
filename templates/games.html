@@ -4,27 +4,27 @@
 {% block content%}
     <h1 style="color:white;"><b> GAMES</b> </h1>
     <div class="container">
-      <div class="row" style="padding-top:20px;">
+      <div class="row">
         {% if data%}
             {% for i in range(0, len) %}
                 <div class="col-lg-2">
-                    <div class="card bg-dark mb-2" id="game_card" style="height:32rem; width:18rem;">
+                    <div class="card bg-dark mb-2" id="game_card" style="height:29rem; width:18rem;">
                         <a href="/games/{{data[i][0]}}">
 
                           <img class="card-img-top mx-auto" style="text-align:center;" src="{{ url_for('static', filename='/images/games/'+ data2[i]+'.jpg')}}" 
-                            onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/404.jpg')}}'" alt="Card image cap" height="230px" width="130px">
+                            onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/404.jpg')}}'" alt="Card image cap" height="200px" width="230px">
                           
-                          <div class="card-body" style="height:60px;">
-                              <h3 class="card-title text-white">{{data[i][1]}}</h3>
+                          <div class="card-body" style="height:0px;">
+                              <h4 class="card-title text-white">{{data[i][1]}}</h4>
                               {% if GameArray %}
                                 <h6 id="homeGameType" class="text-muted">{{GameArray[i]}}</h6>
                               {% endif %}
                           </div>
                          </a>
                     </div>
-                    <br>
                 </div>
             {% endfor %}
+            <br>       
         {% endif %}
       </div>
     </div>
