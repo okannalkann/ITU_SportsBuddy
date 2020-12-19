@@ -16,6 +16,9 @@
                           
                           <div class="card-body" style="height:60px;">
                               <h3 class="card-title text-white">{{data[i][1]}}</h3>
+                              {% if GameArray %}
+                                <h6 id="homeGameType" class="text-muted">{{GameArray[i]}}</h6>
+                              {% endif %}
                           </div>
                          </a>
                     </div>

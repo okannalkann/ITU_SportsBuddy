@@ -17,7 +17,78 @@ def home_page():
             query="SELECT * FROM mydb.users"
             db.cursor.execute(query)
             myresult = db.cursor.fetchall()
-            return render_template('home.html',len=len(myresult), username=username)
+            
+            query="""SELECT mydb.games.game_id,mydb.games.game_name, mydb.game_has_category.game_category_cate_id FROM mydb.games
+            LEFT JOIN mydb.game_has_category ON mydb.game_has_category.games_game_id = mydb.games.game_id
+            WHERE mydb.game_has_category.game_category_cate_id = 15"""
+            db.cursor.execute(query)
+            actionGames = db.cursor.fetchall()
+            actionGamesId=[]
+            for i in actionGames: # converting int to string for void type error
+                actionGamesId.append(str(i[0]))
+
+            cateArray=[] #Category extract for every game card
+            for i in actionGames:
+                query="""SELECT mydb.game_category.category_name FROM mydb.game_category
+                    LEFT JOIN mydb.game_has_category ON mydb.game_has_category.game_category_cate_id = mydb.game_category.cate_id
+                    LEFT JOIN mydb.games ON mydb.games.game_id = mydb.game_has_category.games_game_id
+                    WHERE mydb.games.game_id=""" + str(i[0])
+                db.cursor.execute(query)
+                cateler = db.cursor.fetchall()
+                cateArray.append(cateler[0][0])
+
+            query="""SELECT mydb.games.game_id,mydb.games.game_name, mydb.game_has_category.game_category_cate_id FROM mydb.games
+            LEFT JOIN mydb.game_has_category ON mydb.game_has_category.games_game_id = mydb.games.game_id
+            WHERE mydb.game_has_category.game_category_cate_id = 1"""
+            db.cursor.execute(query)
+            FPSGames = db.cursor.fetchall()
+
+            FPSGamesId=[]
+            for i in FPSGames: # converting int to string for void type error
+                FPSGamesId.append(str(i[0]))
+
+            FPSArray=[] #Category extract for every game card
+            for i in FPSGames:
+                query="""SELECT mydb.game_category.category_name FROM mydb.game_category
+                    LEFT JOIN mydb.game_has_category ON mydb.game_has_category.game_category_cate_id = mydb.game_category.cate_id
+                    LEFT JOIN mydb.games ON mydb.games.game_id = mydb.game_has_category.games_game_id
+                    WHERE mydb.games.game_id=""" + str(i[0])
+                db.cursor.execute(query)
+                fps = db.cursor.fetchall()
+                FPSArray.append(fps[0][0])
+            
+            query="""SELECT mydb.games.game_id,mydb.games.game_name, mydb.game_has_category.game_category_cate_id FROM mydb.games
+            LEFT JOIN mydb.game_has_category ON mydb.game_has_category.games_game_id = mydb.games.game_id
+            WHERE mydb.game_has_category.game_category_cate_id = 18"""
+            db.cursor.execute(query)
+            ShooterGames = db.cursor.fetchall()
+            
+            ShooterGamesId=[]
+            for i in ShooterGames: # converting int to string for void type error
+                ShooterGamesId.append(str(i[0]))
+
+            ShooterArray=[] #Category extract for every game card
+            for i in ShooterGames:
+                query="""SELECT mydb.game_category.category_name FROM mydb.game_category
+                    LEFT JOIN mydb.game_has_category ON mydb.game_has_category.game_category_cate_id = mydb.game_category.cate_id
+                    LEFT JOIN mydb.games ON mydb.games.game_id = mydb.game_has_category.games_game_id
+                    WHERE mydb.games.game_id=""" + str(i[0])
+                db.cursor.execute(query)
+                shooter = db.cursor.fetchall()
+                ShooterArray.append(shooter[0][0])
+ 
+            query="SELECT * FROM mydb.sports"
+            db.cursor.execute(query)
+            SportsTable = db.cursor.fetchall()
+            
+            SportsId=[]
+            for i in SportsTable: # converting int to string for void type error
+                SportsId.append(str(i[0]))
+             
+            
+            return render_template('home.html',FPSArray=FPSArray,lenFPS=len(FPSArray),ShooterArray=ShooterArray,lenShooter=len(ShooterArray),lenCate=len(cateArray),cate=cateArray,SportsId=SportsId,SportsTable=SportsTable,ShooterGamesId=ShooterGamesId,FPSGamesId=FPSGamesId,actionGamesId=actionGamesId,ShooterGames=ShooterGames,FPSGames=FPSGames,actionGames=actionGames,lenSp=len(SportsTable),lenS=len(ShooterGames),lenF=len(FPSGames),lenA=len(actionGames),len=len(myresult), username=username)
+
+
         else:
             return redirect(url_for("login",haveto="You have to sign in"))
     except:
@@ -160,7 +231,18 @@ def games():
                 myresult2=[]
                 for i in myresult: # converting int to string for void type error
                     myresult2.append(str(i[0]))
-                return render_template('games.html',len=len(myresult),data=myresult,data2=myresult2,username=username)
+                
+                GameArray=[] #Category extract for every game card
+                for i in myresult:
+                    query="""SELECT mydb.game_category.category_name FROM mydb.game_category
+                        LEFT JOIN mydb.game_has_category ON mydb.game_has_category.game_category_cate_id = mydb.game_category.cate_id
+                        LEFT JOIN mydb.games ON mydb.games.game_id = mydb.game_has_category.games_game_id
+                        WHERE mydb.games.game_id=""" + str(i[0])
+                    db.cursor.execute(query)
+                    gameTypes = db.cursor.fetchall()
+                    GameArray.append(gameTypes[0][0])
+    
+                return render_template('games.html',GameArray=GameArray,lenG=len(GameArray),len=len(myresult),data=myresult,data2=myresult2,username=username)
 
         else:
             return redirect(url_for("login",haveto="You have to sign in"))
