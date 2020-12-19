@@ -244,7 +244,17 @@ def games():
                     GameArray.append(gameTypes[0][0])
     
                 return render_template('games.html',GameArray=GameArray,lenG=len(GameArray),len=len(myresult),data=myresult,data2=myresult2,username=username)
+            # else:
+            #     if request.form.get("game_types"):
+            #         query = "SELECT * FROM mydb.game_category"
+            #         db.cursor.execute(query)
+            #         AllCategories = db.cursor.fetchall()
 
+            #         # query = "SELECT * FROM mydb.game_category WHERE mydb.game_category.cate_id = %s"
+            #         # val = LBCate_id
+            #         # db.cursor.execute(query,LBCate_id)
+            #         # categoryGame = db.cursor.fetchall()
+            #         return redirect(url_for("games",listCate=AllCategories))
         else:
             return redirect(url_for("login",haveto="You have to sign in"))
     except:

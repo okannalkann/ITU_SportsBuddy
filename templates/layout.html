@@ -12,7 +12,7 @@
     {% block head%} {% endblock %}
   </head>
 
-  <body style="background-color:#0d0d0d;">
+  <body>
 
     <nav class="navbar navbar-expand-md" style="background-color:#1a1a1a; height:60px;">
       <a class="navbar-brand" href="/" style=" color:white;  font-size:20px; padding-right:50px; ">SportsBuddy</a>
@@ -31,7 +31,7 @@
             <a class="nav-link" href="/games" style="margin-top:20px; font-size:20px; color:white;">Games</a>
           </li>
           {% if username %}
-            <li class="nav-item dropdown ml-auto" style="font-size:20px; float:right;">
+            <li class="nav-item dropdown ml-auto" style="font-size:20px; padding-right:20px; ">
               <a class="nav-link dropdown-toggle" style="margin-top:20px;  color:white;" href="" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   {% block username %} {% endblock %}
               </a>

@@ -10,13 +10,14 @@
 
 
     <h1 style="color:white;"><b> Action Games</b> </h1>
-    <div class="container">
-      <div class="row" style="padding-top:0px;">
+    <div class="container action">
+    <button class="homeleft" onclick="scrollleft()">Left</button>
+      <div class="row">
         {% if actionGames%}
                 <div id="actiongames">
             {% for i in range(0, lenA) %}
                   <div class="col-lg-2">
-                      <div class="card bg-dark mb-2" id="game_card" style="height:29rem; width:18rem;">
+                      <div class="card bg-dark mb-2 game_card">
                           <a href="/games/{{actionGames[i][0]}}">
                             <img class="card-img-top mx-auto" style="text-align:center;" src="{{ url_for('static', filename='/images/games/'+ actionGamesId[i]+'.jpg')}}" 
                               onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/404.jpg')}}'" alt="Card image cap" height="200px" width="130px">
@@ -33,24 +34,23 @@
                   </div>
             {% endfor %}
                 </div>
-                <button onclick="scrollleft()">Left</button>
-                <button onclick="myFunction()">Right</button>
         {% endif %}
       </div>
+      <button onclick="myFunction()">Right</button>
     </div>
 
-    <h1 style="color:white;"><b> SPORTS</b> </h1>
+    <h1 style="color:white;"><b> Sports</b> </h1>
     <div class="container">
       <div class="row">
         {% if SportsTable%}
           <div id="actiongames1">
             {% for i in range(0, lenSp) %}
                 <div class="col-lg-2 mb-2">
-                    <div class="card bg-dark mb-2" id="sport_card" style="height:25rem; width: 18rem;">
+                    <div class="card bg-dark mb-2 sport_card">
                         <a href="/sports/{{SportsTable[i][0]}}">
 
                           <img class="card-img-top mx-auto" style="text-align:center;" src="{{ url_for('static', filename='/images/sports/'+ SportsId[i]+'.jpg')}}" 
-                            onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/404.jpg')}}'" alt="Card image cap" height="200px" width="130px">
+                            onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/404.jpg')}}'" alt="Card image cap" >
                           
                           <div class="card-body" style="height:30px;">
                               <h4 class="card-title text-white">{{SportsTable[i][1]}}</h4>

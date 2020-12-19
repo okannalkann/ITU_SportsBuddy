@@ -2,19 +2,40 @@
 {% block title%} Games {% endblock %}
 {% block username %}  <p>{{username}}</p> {% endblock %}
 {% block content%}
-    <h1 style="color:white;"><b> GAMES</b> </h1>
+    <h1 style="color:white;"><b> Games</b> </h1>
+
+
+
+<!--
+{% if listCate %}
+    <form action="" method>
+      <label for="cars">Game Category</label>
+  {% for i in range(0, len) %}
+      <select name="categories" id="game_types">
+        <option value="{{listCate[i][0]}}">{{listCate[i][0]}}</option>
+      </select>
+  {% endfor %}
+      <br><br>
+      <input type="submit" value="Submit">
+    </form>
+{% endif %}
+-->
+
+
+
+
     <div class="container">
       <div class="row">
         {% if data%}
             {% for i in range(0, len) %}
-                <div class="col-lg-2">
-                    <div class="card bg-dark mb-2" id="game_card" style="height:29rem; width:18rem;">
+                <div class="col-lg-2 mr-2 mt-3 cardwidth">
+                    <div class="card bg-dark mb-2 game_card">
                         <a href="/games/{{data[i][0]}}">
 
                           <img class="card-img-top mx-auto" style="text-align:center;" src="{{ url_for('static', filename='/images/games/'+ data2[i]+'.jpg')}}" 
-                            onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/404.jpg')}}'" alt="Card image cap" height="200px" width="230px">
+                            onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/404.jpg')}}'" alt="Card image cap">
                           
-                          <div class="card-body" style="height:0px;">
+                          <div class="card-body">
                               <h4 class="card-title text-white">{{data[i][1]}}</h4>
                               {% if GameArray %}
                                 <h6 id="homeGameType" class="text-muted">{{GameArray[i]}}</h6>
@@ -24,7 +45,7 @@
                     </div>
                 </div>
             {% endfor %}
-            <br>       
+            <br>    
         {% endif %}
       </div>
     </div>

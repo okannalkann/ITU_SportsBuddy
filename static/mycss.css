@@ -1,11 +1,17 @@
 html {
   height: 100%;
+  
 }
 body {
     font-family: 'Calibri'; 
     height: 100%;
+    background-color:#0e0e10 !important;
+    width: 100%;
 }
-
+nav.navbar{
+  
+  background-color:#18181b !important;
+}
 p{
     text-align: center;
 }
@@ -160,12 +166,25 @@ nav ul { margin: 0; }
   justify-content: center;
   align-items: center;
 }
+.container .row .sport_card{
+  height: 32rem;
+  width: 18rem;
 
-#sport_card:hover{
+}
+
+.container .row .sport_card:hover{
   opacity: 0.90;
   zoom: 0.99;
 }
 
+.container .row .sport_card img{
+  height: 25rem;
+  width: 100%;
+}
+
+.container .row .sport_card .card-body{
+  padding-top: 0 !important;
+}
 
 #game_card:hover{
   opacity: 0.90;
@@ -179,8 +198,8 @@ nav ul { margin: 0; }
   flex-direction: row;
   overflow-x: scroll;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
-
 
 #actiongames1
 {
@@ -188,6 +207,7 @@ nav ul { margin: 0; }
   flex-direction: row;
   overflow-x: scroll;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 #actiongames2
@@ -196,6 +216,7 @@ nav ul { margin: 0; }
   flex-direction: row;
   overflow-x: scroll;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 #actiongames3
@@ -204,6 +225,7 @@ nav ul { margin: 0; }
   flex-direction: row;
   overflow-x: scroll;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 
@@ -212,7 +234,40 @@ nav ul { margin: 0; }
   color:#ac00e6;
 }
 
-#game_card
-{
+
+.container .row .game_card{
+  height: 32rem;
+  width: 18rem;
   background-color: aquamarine;
+}
+
+.container .row .game_card:hover{
+  overflow-x: 32rem;
+  width: 18rem;
+  background-color: aquamarine;
+}
+
+.container .row .game_card .card-body{
+  padding-top: 0 !important;
+}
+
+.container .row .game_card img{
+  height: 25rem;
+  width: 100%;
+  object-position: center center;
+}
+
+.collapse .navbar-nav{
+  width: 100%;
+}
+.action .row{
+  margin-left: auto;
+}
+
+.action .homeleft{
+  margin-left: auto;
+}
+
+.dropdown-menu{
+  min-width: 7px !important;
 }
