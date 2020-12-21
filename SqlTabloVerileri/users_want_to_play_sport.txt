@@ -15,8 +15,6 @@ INSERT INTO `mydb`.`user_want_to_play_sports` (`id_User_want_to_play_sports`, `U
 INSERT INTO `mydb`.`user_want_to_play_sports` (`id_User_want_to_play_sports`, `User_description`, `users_user_id`, `sports_sport_id`) VALUES ('15', 'Voleybol oynamak istiyorum. Oynamak isteyen iletişime geçebilir mi?', '7', '3');
 INSERT INTO `mydb`.`user_want_to_play_sports` (`id_User_want_to_play_sports`, `User_description`, `users_user_id`, `sports_sport_id`) VALUES ('16', 'Voleybol oynayan yazabilir mi thanks', '9', '3');
 INSERT INTO `mydb`.`user_want_to_play_sports` (`id_User_want_to_play_sports`, `User_description`, `users_user_id`, `sports_sport_id`) VALUES ('17', 'Bilardo oynamak istiyorum.', '10', '5');
-(`id_User_want_to_play_sports`, `User_description`, `users_user_id`, `sports_sport_id`) VALUES ('18', 'Semih Saygıner olmayan yazmasın', '1', '5');
-INSERT INTO `mydb`.`user_want_to_play_sports` 
-(`id_User_want_to_play_sports`, `User_description`, `users_user_id`, `sports_sport_id`) VALUES ('18', 'Kampüste bisiklet sürmek istiyorum. Beraber sürmek isteyen var mı?', '1', '7');
-
+INSERT INTO `mydb`.`user_want_to_play_sports` (`id_User_want_to_play_sports`, `User_description`, `users_user_id`, `sports_sport_id`) VALUES ('18', 'Semih Saygıner olmayan yazmasın', '1', '5');
+INSERT INTO `mydb`.`user_want_to_play_sports` (`id_User_want_to_play_sports`, `User_description`, `users_user_id`, `sports_sport_id`) VALUES ('17', 'Kampüste bisiklet sürmek istiyorum. Beraber sürmek isteyen var mı?', '1', '7');
 

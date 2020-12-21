@@ -83,7 +83,7 @@ nav ul { margin: 0; }
     z-index: 9;
   }
   .formContainer {
-    max-width: 900px;
+    max-width: 300px;
     padding: 20px;
     background-color: #fff;
   }
@@ -173,8 +173,9 @@ nav ul { margin: 0; }
 }
 
 .container .row .sport_card:hover{
-  opacity: 0.90;
-  zoom: 0.99;
+  border-color: #8402af;
+  transform: translate(6px, -6px);
+
 }
 
 .container .row .sport_card img{
@@ -186,11 +187,6 @@ nav ul { margin: 0; }
   padding-top: 0 !important;
 }
 
-#game_card:hover{
-  opacity: 0.90;
-  zoom: 0.99;
-  color: #8402af;
-}
 
 #actiongames
 {
@@ -228,23 +224,17 @@ nav ul { margin: 0; }
   scroll-behavior: smooth;
 }
 
-
-#homeGameType:hover
-{
-  color:#ac00e6;
-}
-
-
 .container .row .game_card{
   height: 32rem;
   width: 18rem;
-  background-color: aquamarine;
 }
 
 .container .row .game_card:hover{
   overflow-x: 32rem;
   width: 18rem;
-  background-color: aquamarine;
+  border-color: #8402af;
+  transform: translate(6px, -6px);
+  color: #8402af;
 }
 
 .container .row .game_card .card-body{
@@ -260,14 +250,14 @@ nav ul { margin: 0; }
 .collapse .navbar-nav{
   width: 100%;
 }
-.action .row{
-  margin-left: auto;
-}
 
-.action .homeleft{
-  margin-left: auto;
-}
 
 .dropdown-menu{
   min-width: 7px !important;
+}
+
+
+.container .row .cardwidth{
+  background-color: #8402af;
+  width: 18rem;
 }

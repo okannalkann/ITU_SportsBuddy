@@ -7,7 +7,8 @@
       <div class="row" style="padding-top:20px;">
         {% if data%}
             {% for i in range(0, len) %}
-                <div class="col-2">
+                <div class="col-2 mb-4">
+                  <div class="cardwidth">
                     <div class="card bg-dark mb-2 sport_card">
                         <a href="/sports/{{data[i][0]}}">
 
@@ -19,7 +20,7 @@
                           </div>
                          </a>
                     </div>
-                    <br>
+                  </div>
                 </div>
             {% endfor %}
         {% endif %}
