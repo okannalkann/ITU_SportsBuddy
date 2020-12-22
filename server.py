@@ -204,14 +204,11 @@ def contact(sport_id,id_User_want_to_play_sports):
                     return render_template('contact.html',data=myresult,lenRequestAnswer=len(mycomment),RequestAnswer=mycomment,username=username,sport_ids=sport_id,sport_name=sport_name,wantid=id_User_want_to_play_sports)
             else:
                 if request.form.get("add_comment"):
-                    print("Db ye eklendi")
                     user_description = request.form["email"] #request 
                     query="INSERT INTO mydb.sport_request_messages ( request_messages, user_want_to_play_sports_id_User_want_to_play_sports, users_user_id, sports_sport_id) VALUES (%s,%s,%s, %s)"
                     val = (user_description,id_User_want_to_play_sports,Session_user_id,sport_id)
-                    print("Db ye eklendi", query, val)
                     db.cursor.execute(query, val) #added the database
                     db.con.commit()
-                    print("Db ye eklendi")
                     return redirect(url_for("contact",sport_id=sport_id,id_User_want_to_play_sports=id_User_want_to_play_sports))
             
         else:
