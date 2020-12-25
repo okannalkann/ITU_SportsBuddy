@@ -103,7 +103,7 @@ nav ul { margin: 0; }
   .formContainer .btn {
     padding: 12px 20px;
     border: none;
-    background-color: #8ebf42;
+    background-color: #ac00e6;
     color: #fff;
     cursor: pointer;
     width: 100%;
@@ -111,7 +111,7 @@ nav ul { margin: 0; }
     opacity: 0.8;
   }
   .formContainer .cancel {
-    background-color: #cc0000;
+    background-color: #ac00e6;
   }
   .formContainer .btn:hover,
   .openButton:hover {
@@ -261,3 +261,12 @@ nav ul { margin: 0; }
   background-color: #8402af;
   width: 18rem;
 }
+
+div form .btn{
+  background-color: #ac00e6;
+}
+div form .btn:hover{
+  background-color: #8402af;
+}
+
+

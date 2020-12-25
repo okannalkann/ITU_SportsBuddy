@@ -3,12 +3,39 @@ import mysql.connector
 from flask_mysqldb import MySQL
 from database import Database
 import bcrypt
+# from flask_mail import Mail, Message
+
 
 app = Flask(__name__)
+# mail = Mail(app)
 app.secret_key = "SportBuddy"
 db = Database("127.0.0.1", 3306, "root", "qwerty123456", "mydb")
 db.con.cursor()    
 
+# app.config['MAIL_SERVER']='smtp.gmail.com'
+# app.config['MAIL_PORT'] = 465
+# app.config['MAIL_USERNAME'] = 'no.reply.sportsbuddy@gmail.com'
+# app.config['MAIL_PASSWORD'] = 'Alkano16'
+# app.config['MAIL_USE_TLS'] = False
+# app.config['MAIL_USE_SSL'] = True
+# mail = Mail(app)
+
+# @app.route("/passwordchange")
+# def passwordchange():
+#     try:
+#         if 'user' in session:
+#             Session_user_id = session['user_id']
+#             db.cursor.execute("SELECT * FROM mydb.users WHERE user_id = %s",Session_user_id)
+#             myresult = db.cursor.fetchone()
+                  
+#             msg = Message('Password Reset', sender = 'no.reply.sportsbuddy@gmail.com', recipients = [str(myresult[3])])
+#             msg.body = "Hello "+str(myresult[1])+ str(myresult[2]) "şifre değişikliği için  from Flask-Mail"
+#             mail.send(msg)
+#             return "Sent"
+#         else:
+#             return redirect(url_for("login",haveto="You have to sign in"))
+#     except:
+#         print("Password Reset Error")
 
 @app.route('/', methods=['GET','POST'])
 def home_page():
@@ -136,7 +163,6 @@ def sport_index(sport_id):
                 if myresult==[]:
                     yok="Nobody Wanted to Play :("
                     return render_template('sport_index.html',yok=yok,username=username,sport_ids=sport_id,sport_name=sport_name)
-                print("adasd",myresult)
                 return render_template('sport_index.html',len=len(myresult),data=myresult,username=username,sport_ids=sport_id,sport_name=sport_name)
             
             else:
@@ -168,7 +194,7 @@ def sport_index(sport_id):
         else:
             return redirect(url_for("login",haveto="You have to sign in"))
     except:
-        print("sport_index hata")
+        print("sport_index error")
 
 
 @app.route('/sports/<int:sport_id>/<int:id_User_want_to_play_sports>', methods=['GET','POST'])
@@ -200,7 +226,6 @@ def contact(sport_id,id_User_want_to_play_sports):
                     print("Mycomment is empty")
                     return render_template('contact.html',data=myresult,username=username,sport_ids=sport_id,sport_name=sport_name,wantid=id_User_want_to_play_sports)
                 else:
-                    print("Mycomment is not empty")
                     return render_template('contact.html',data=myresult,lenRequestAnswer=len(mycomment),RequestAnswer=mycomment,username=username,sport_ids=sport_id,sport_name=sport_name,wantid=id_User_want_to_play_sports)
             else:
                 if request.form.get("add_comment"):
@@ -239,23 +264,49 @@ def games():
                     db.cursor.execute(query)
                     gameTypes = db.cursor.fetchall()
                     GameArray.append(gameTypes[0][0])
-    
-                return render_template('games.html',GameArray=GameArray,lenG=len(GameArray),len=len(myresult),data=myresult,data2=myresult2,username=username)
-            # else:
-            #     if request.form.get("game_types"):
-            #         query = "SELECT * FROM mydb.game_category"
-            #         db.cursor.execute(query)
-            #         AllCategories = db.cursor.fetchall()
 
-            #         # query = "SELECT * FROM mydb.game_category WHERE mydb.game_category.cate_id = %s"
-            #         # val = LBCate_id
-            #         # db.cursor.execute(query,LBCate_id)
-            #         # categoryGame = db.cursor.fetchall()
-            #         return redirect(url_for("games",listCate=AllCategories))
+
+                query = "SELECT * FROM mydb.game_category"
+                db.cursor.execute(query)
+                AllCategories = db.cursor.fetchall()
+                    
+    
+                return render_template('games.html',lenAll=len(AllCategories),listCate=AllCategories,GameArray=GameArray,lenG=len(GameArray),len=len(myresult),data=myresult,data2=myresult2,username=username)
+            if request.method =="POST":
+                game_type = request.form.get('categories')
+                print(game_type)
+                if game_type == "All":
+                    return redirect(url_for("games"))
+                else:
+                    query = "SELECT * FROM mydb.game_category WHERE mydb.game_category.category_name = %s"
+                    db.cursor.execute(query,(game_type,))
+                    categoryid = db.cursor.fetchone()
+                    
+                query = """SELECT mydb.games.game_id, mydb.games.game_name FROM mydb.game_has_category
+                    LEFT JOIN mydb.games ON  mydb.games.game_id = mydb.game_has_category.games_game_id
+                    LEFT JOIN mydb.game_category ON mydb.game_category.cate_id = mydb.game_has_category.game_category_cate_id
+                    WHERE mydb.game_category.cate_id = %s"""
+                db.cursor.execute(query,(categoryid[0],))
+                categoryGame = db.cursor.fetchall()
+
+                gameType=[]
+                for i in categoryGame: # converting int to string for void type error
+                    gameType.append(str(game_type))
+                
+                myresult2=[]
+                for i in categoryGame: # converting int to string for void type error
+                    myresult2.append(str(i[0]))
+                
+                query = "SELECT * FROM mydb.game_category"
+                db.cursor.execute(query)
+                AllCategories = db.cursor.fetchall()
+  
+                return render_template('games.html',lenAll=len(AllCategories),listCate=AllCategories,GameArray=gameType,lenG=len(categoryGame),len=len(categoryGame),data=categoryGame,data2=myresult2,username=username)
+            
         else:
             return redirect(url_for("login",haveto="You have to sign in"))
     except:
-        print("Games Sayfa hatası")
+        print("Games Page Error")
 
 
 @app.route('/games/<int:game_id>', methods=['GET','POST'])

@@ -5,21 +5,31 @@
     <h1 style="color:white;"><b> Games</b> </h1>
 
 
+    <!--<div class="d-flex flex-row bd-highlight mb-3">
+      <form class="form-inline my-2 my-lg-0" style="float: left;">
+        <div class="p-2 bd-highlight"><p style="font-size:25px; color:white;"><b>Filtrele:</b></p></div>
+        <div class="p-2 bd-highlight"><input class="form-control mr-sm-2" name="searchgame" type="search" placeholder="Ara" aria-label="Search"></div>
+        <div class="p-2"><button class="btn cancel" type="submit" style="color:white;" name="filter_game">Search Game Category</button></div>
+      </form>
+    </div>-->
 
-<!--
-{% if listCate %}
-    <form action="" method>
-      <label for="cars">Game Category</label>
-  {% for i in range(0, len) %}
-      <select name="categories" id="game_types">
-        <option value="{{listCate[i][0]}}">{{listCate[i][0]}}</option>
-      </select>
-  {% endfor %}
-      <br><br>
-      <input type="submit" value="Submit">
-    </form>
-{% endif %}
--->
+    {% if listCate %}
+        <form action="" method="POST">
+          <label for="game_types">Game Category</label>
+          <select name="categories" id="game_types">
+          <option value="All" name="game_cate">All Games</option>
+      {% for i in range(0, lenAll) %}
+            <option value="{{listCate[i][1]}}" name="game_cate">{{listCate[i][1]}}</option>
+      {% endfor %}
+          </select>
+          <input type="submit" value="Submit" name="game_filter">
+        </form>
+    {% endif %}
+
+
+
+    
+
 
     <div class="container">
       <div class="row"style="padding-top:20px;">
