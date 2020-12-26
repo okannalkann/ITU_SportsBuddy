@@ -17,7 +17,6 @@ db.con.cursor()
 query = "SELECT * FROM mydb.website_mail"
 db.cursor.execute(query)
 site_mail = db.cursor.fetchone()
-print("site mail",site_mail[1], "site", site_mail[2])
 
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
@@ -555,17 +554,14 @@ def get_reset_token(user_id, expires_sec=1800):
     return s.dumps({'user_id': user_id}).decode('utf-8')
 
 def verify_reset_token(token):
-    print("basladi")
     s = Serializer(app.config['SECRET_KEY'])
     try:
         tuser_id = s.loads(token)['user_id']
     except:
         return None
-    print("try bitti",tuser_id)
     query="SELECT * FROM mydb.users WHERE mydb.users.user_id=%s"
     db.cursor.execute(query,(tuser_id,))
     user = db.cursor.fetchone()
-    print("user",user)
     return user
     
 
@@ -593,10 +589,11 @@ def reset_token(token):
             flash('That is an invalid or expired token', 'warning')
             return redirect(url_for('reset_request'))
 
+
         if request.method =="GET": #return values for button      
             return render_template('reset_token.html')
             
-        print("user" , user)
+
         if request.method =="POST": #return values for button      
             if request.form.get("update_password"):
                 pw=request.form["password"].encode('utf-8')
@@ -604,10 +601,7 @@ def reset_token(token):
                 if pw != cpw:
                     flash('Your password not matched!', 'success')
                     return redirect(url_for('reset_token',token=token))
-                print("password- ",pw)
                 hashed_password = bcrypt.hashpw(pw,bcrypt.gensalt())
-                print("hashed_password ",hashed_password )
-                print(user,"   ", hashed_password," hash")
                 query= (" UPDATE mydb.users SET user_password = %s WHERE (user_id = %s) ")
                 val=(hashed_password,user[0])
                 db.cursor.execute(query, val) #added the database
