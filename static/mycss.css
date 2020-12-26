@@ -24,7 +24,7 @@ h1{
     text-align: center;
 }
 
-a.nav-link:hover, a.navbar-brand:hover {
+.active, a.nav-link:hover, a.navbar-brand:hover {
     color:#ac00e6 !important;
 }
 

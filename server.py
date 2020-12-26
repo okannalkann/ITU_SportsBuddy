@@ -3,22 +3,24 @@ import mysql.connector
 from flask_mysqldb import MySQL
 from database import Database
 import bcrypt
-# from flask_mail import Mail, Message
+from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
+
+from flask_mail import Mail, Message
 
 
 app = Flask(__name__)
-# mail = Mail(app)
+mail = Mail(app)
 app.secret_key = "SportBuddy"
 db = Database("127.0.0.1", 3306, "root", "qwerty123456", "mydb")
 db.con.cursor()    
 
-# app.config['MAIL_SERVER']='smtp.gmail.com'
-# app.config['MAIL_PORT'] = 465
-# app.config['MAIL_USERNAME'] = 'no.reply.sportsbuddy@gmail.com'
-# app.config['MAIL_PASSWORD'] = 'Alkano16'
-# app.config['MAIL_USE_TLS'] = False
-# app.config['MAIL_USE_SSL'] = True
-# mail = Mail(app)
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'no.reply.sportsbuddy@gmail.com'
+app.config['MAIL_PASSWORD'] = 'Alkano16'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
 
 # @app.route("/passwordchange")
 # def passwordchange():
@@ -140,7 +142,7 @@ def sports():
         else:
             return redirect(url_for("login",haveto="You have to sign in"))
     except:
-        print("Sport Sayfa hatası")
+        print("Sport Page Error")
 
 @app.route('/sports/<int:sport_id>', methods=['GET','POST'])
 def sport_index(sport_id):
@@ -274,14 +276,13 @@ def games():
                 return render_template('games.html',lenAll=len(AllCategories),listCate=AllCategories,GameArray=GameArray,lenG=len(GameArray),len=len(myresult),data=myresult,data2=myresult2,username=username)
             if request.method =="POST":
                 game_type = request.form.get('categories')
-                print(game_type)
                 if game_type == "All":
                     return redirect(url_for("games"))
                 else:
                     query = "SELECT * FROM mydb.game_category WHERE mydb.game_category.category_name = %s"
                     db.cursor.execute(query,(game_type,))
                     categoryid = db.cursor.fetchone()
-                    
+
                 query = """SELECT mydb.games.game_id, mydb.games.game_name FROM mydb.game_has_category
                     LEFT JOIN mydb.games ON  mydb.games.game_id = mydb.game_has_category.games_game_id
                     LEFT JOIN mydb.game_category ON mydb.game_category.cate_id = mydb.game_has_category.game_category_cate_id
@@ -408,7 +409,6 @@ def game_contact(game_id,id_user_want_to_play_games):
         print("Game Contact hata")
 
 
-
 @app.route('/profile', methods=['GET','POST'])
 def profile():
     try:
@@ -457,13 +457,13 @@ def profile():
         print("Profil Sayfa hatası")
 
 
-
 @app.route('/profile', methods=['POST'])
 def upload_file():
     uploaded_file = request.files['file']
     if uploaded_file.filename != '':
         uploaded_file.save(uploaded_file.filename)
     return redirect(url_for('sport_index'))
+
 
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -482,6 +482,7 @@ def login():
                     if bcrypt.hashpw(user_password,Logincheck[5].encode('utf-8') ) == Logincheck[5].encode('utf-8'):
                         session["user"] = Logincheck[1]
                         session["user_id"] = Logincheck[0]
+                        session["user_email"] = Logincheck[4]
                         return redirect(url_for("home_page"))
 
                     else:
@@ -529,6 +530,88 @@ def logout():
     session.pop("user", None) #logout
     return redirect(url_for("login"))
 
+
+def send_reset_email(user_email):
+    query="SELECT * FROM mydb.users WHERE mydb.users.user_email=%s"
+    db.cursor.execute(query,(user_email,))
+    user = db.cursor.fetchone()
+    token = get_reset_token(user[0])
+    msg = Message('Password Reset Request',
+                  sender='no.reply.sportsbuddy@gmail.com',
+                  recipients=[user_email])
+    msg.body = f'''To reset your password, visit the following link:
+            {url_for('reset_token', token=token, _external=True)}
+            If you did not make this request then simply ignore this email and no changes will be made.
+            '''
+    mail.send(msg)
+
+def get_reset_token(user_id, expires_sec=1800):        
+    s = Serializer(app.config['SECRET_KEY'], expires_sec)
+    return s.dumps({'user_id': user_id}).decode('utf-8')
+
+def verify_reset_token(token):
+    print("basladi")
+    s = Serializer(app.config['SECRET_KEY'])
+    try:
+        tuser_id = s.loads(token)['user_id']
+    except:
+        return None
+    print("try bitti",tuser_id)
+    query="SELECT * FROM mydb.users WHERE mydb.users.user_id=%s"
+    db.cursor.execute(query,(tuser_id,))
+    user = db.cursor.fetchone()
+    print("user",user)
+    return user
+    
+
+@app.route("/reset_request", methods=['GET', 'POST'])
+def reset_request():
+    try:
+        if request.method =="GET": #return values for button      
+            return render_template('reset_request.html')
+        if request.method =="POST":
+            if request.form.get("send_Emailrequest"):
+                email = request.form["email"]
+                send_reset_email(email)
+                flash('An email has been sent with instructions to reset your password.', 'info')
+                return redirect(url_for('login'))
+    except:
+        print("Reset Pw Error")
+
+
+@app.route("/reset_password/<token>", methods=['GET', 'POST'])
+def reset_token(token):
+    try:
+        print("deneme")
+        user = verify_reset_token(token)
+        if user is None:
+            flash('That is an invalid or expired token', 'warning')
+            return redirect(url_for('reset_request'))
+
+        if request.method =="GET": #return values for button      
+            return render_template('reset_token.html')
+            
+        print("user" , user)
+        if request.method =="POST": #return values for button      
+            if request.form.get("update_password"):
+                pw=request.form["password"].encode('utf-8')
+                cpw= request.form["cpassword"].encode('utf-8')
+                if pw != cpw:
+                    flash('Your password not matched!', 'success')
+                    return redirect(url_for('reset_token',token=token))
+                print("password- ",pw)
+                hashed_password = bcrypt.hashpw(pw,bcrypt.gensalt())
+                print("hashed_password ",hashed_password )
+                print(user,"   ", hashed_password," hash")
+                query= (" UPDATE mydb.users SET user_password = %s WHERE (user_id = %s) ")
+                val=(hashed_password,user[0])
+                db.cursor.execute(query, val) #added the database
+                db.con.commit()
+                flash('Your password has been updated! You are now able to log in', 'success')
+                return redirect(url_for('login'))
+
+    except:
+        print("Reset Pw Error")
 
 if __name__ == '__main__':
     app.run(debug=True)
