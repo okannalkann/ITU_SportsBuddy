@@ -5,6 +5,8 @@ from database import Database
 import bcrypt
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 
+from PIL import Image
+
 import os
 from werkzeug.utils import secure_filename
 
@@ -170,17 +172,22 @@ def sport_index(sport_id):
             sport_name = db.cursor.fetchone()
             if request.method == "GET": #return values for button 
                 query =""" 
-                    SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_sports.User_description, mydb.user_want_to_play_sports.id_User_want_to_play_sports FROM mydb.users
+                    SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_sports.User_description, mydb.user_want_to_play_sports.id_User_want_to_play_sports, mydb.users.user_id FROM mydb.users
                     LEFT JOIN mydb.user_want_to_play_sports ON mydb.users.user_id = mydb.user_want_to_play_sports.Users_user_id
                     LEFT JOIN mydb.sports ON mydb.user_want_to_play_sports.Sports_sport_id  = sports.sport_id
                     WHERE mydb.users.user_findingFriend = 1 and mydb.sports.sport_id = """
                 db.cursor.execute(query + str(sport_id))
                 myresult = db.cursor.fetchall()
                 
+                myresult2=[]
+                for i in myresult: # converting int to string for void type error
+                    myresult2.append(str(i[5]))
+                
+
                 if myresult==[]:
                     yok="Nobody Wanted to Play :("
                     return render_template('sport_index.html',yok=yok,username=username,sport_ids=sport_id,sport_name=sport_name)
-                return render_template('sport_index.html',len=len(myresult),data=myresult,username=username,sport_ids=sport_id,sport_name=sport_name)
+                return render_template('sport_index.html',len=len(myresult),data=myresult,data2=myresult2,username=username,sport_ids=sport_id,sport_name=sport_name)
             
             else:
                 if request.form.get("add_request"):
@@ -226,24 +233,32 @@ def contact(sport_id,id_User_want_to_play_sports):
             sport_name = db.cursor.fetchone()
 
             if request.method == "GET": #return values for button 
-                query="""SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_sports.User_description  FROM mydb.user_want_to_play_sports 
+                query="""SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_sports.User_description, mydb.users.user_id  FROM mydb.user_want_to_play_sports 
                     LEFT JOIN mydb.users ON mydb.user_want_to_play_sports.users_user_id = mydb.users.user_id
                     WHERE  mydb.users.user_findingFriend = 1 and mydb.user_want_to_play_sports.id_User_want_to_play_sports = """+ str(id_User_want_to_play_sports) # USer_id yanlis geliyor sessiondaki id ile aynı degilse patlıyo
                 db.cursor.execute(query)
                 myresult = db.cursor.fetchone()
-                print("Myresult", myresult)
+
+                myresult2 = str(myresult[4])
+                
                 query =""" 
                     SELECT mydb.sport_request_messages.request_messages, mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.users.user_id  FROM mydb.sport_request_messages 
                     LEFT JOIN mydb.users ON mydb.sport_request_messages.users_user_id = mydb.users.user_id
                     WHERE mydb.sport_request_messages.user_want_to_play_sports_id_User_want_to_play_sports = """+str(id_User_want_to_play_sports)
                 db.cursor.execute(query)
                 mycomment = db.cursor.fetchall()
+                print("asdakd,", mycomment)
+                mycomment2=[]
+                for i in mycomment: # converting int to string for void type error
+                    mycomment2.append(str(i[4]))
+                
+
 
                 if mycomment ==[]:
                     print("Mycomment is empty")
-                    return render_template('contact.html',data=myresult,username=username,sport_ids=sport_id,sport_name=sport_name,wantid=id_User_want_to_play_sports)
+                    return render_template('contact.html',data=myresult,data2=myresult2,username=username,sport_ids=sport_id,sport_name=sport_name,wantid=id_User_want_to_play_sports)
                 else:
-                    return render_template('contact.html',data=myresult,lenRequestAnswer=len(mycomment),RequestAnswer=mycomment,username=username,sport_ids=sport_id,sport_name=sport_name,wantid=id_User_want_to_play_sports)
+                    return render_template('contact.html',data=myresult,data2=myresult2,data3=mycomment2,lenRequestAnswer=len(mycomment),RequestAnswer=mycomment,username=username,sport_ids=sport_id,sport_name=sport_name,wantid=id_User_want_to_play_sports)
             else:
                 if request.form.get("add_comment"):
                     user_description = request.form["email"] #request 
@@ -336,18 +351,24 @@ def game_index(game_id):
             game_name = db.cursor.fetchone()
             if request.method == "GET": #return values for button 
                 query =""" 
-                    SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_games.User_description, mydb.user_want_to_play_games.id_user_want_to_play_games FROM mydb.users
+                    SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_games.User_description, mydb.user_want_to_play_games.id_user_want_to_play_games, mydb.users.user_id FROM mydb.users
                     LEFT JOIN mydb.user_want_to_play_games ON mydb.users.user_id = mydb.user_want_to_play_games.users_user_id
                     LEFT JOIN mydb.games ON mydb.user_want_to_play_games.games_game_id  = games.game_id
                     WHERE mydb.users.user_findingFriend = 1 and mydb.games.game_id = """
                 db.cursor.execute(query + str(game_id))
                 myresult = db.cursor.fetchall()
+                print("dasdasd", myresult)
+                myresult2=[]
+                for i in myresult: # converting int to string for void type error
+                    print("asdasda", i[5])
+                    myresult2.append(str(i[5]))
+                
                 
                 if myresult==[]:
                     yok="Nobody Wanted to Play :("
                     return render_template('game_index.html',yok=yok,username=username,game_ids=game_id,game_name=game_name)
 
-                return render_template('game_index.html',len=len(myresult),data=myresult,username=username,game_ids=game_id,game_name=game_name)
+                return render_template('game_index.html',len=len(myresult),data=myresult,data2=myresult2,username=username,game_ids=game_id,game_name=game_name)
             
             else:
                 if request.form.get("add_request"):
@@ -370,7 +391,11 @@ def game_index(game_id):
                             WHERE mydb.users.user_findingFriend = 1 and mydb.games.game_id = """
                         db.cursor.execute(query + str(game_id))
                         myresult = db.cursor.fetchall()
-                        return render_template('game_index.html',len=len(myresult),data=myresult,username=username,game_ids=game_id,game_name=game_name,haveto="You already created request.")
+                        myresult2=[]
+                        for i in myresult: # converting int to string for void type error
+                            myresult2.append(str(i[4]))
+                        
+                        return render_template('game_index.html',len=len(myresult),data=myresult,data2=myresult2,username=username,game_ids=game_id,game_name=game_name,haveto="You already created request.")
 
                     
 
@@ -391,24 +416,31 @@ def game_contact(game_id,id_user_want_to_play_games):
             db.cursor.execute(query)
             game_name = db.cursor.fetchone()
             if request.method == "GET": #return values for button 
-                query="""SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_games.User_description  FROM mydb.user_want_to_play_games 
+                query="""SELECT mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.user_want_to_play_games.User_description, mydb.users.user_id  FROM mydb.user_want_to_play_games 
                     LEFT JOIN mydb.users ON mydb.user_want_to_play_games.users_user_id = mydb.users.user_id
                     WHERE  mydb.users.user_findingFriend = 1 and mydb.user_want_to_play_games.id_user_want_to_play_games ="""+ str(id_user_want_to_play_games) # USer_id yanlis geliyor sessiondaki id ile aynı degilse patlıyo
                 db.cursor.execute(query)
                 myresult = db.cursor.fetchone()
 
-                query =""" SELECT mydb.games_request_messages.games_request_messages, mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email  FROM mydb.games_request_messages 
+                myresult2 = str(myresult[4])
+                
+
+                query =""" SELECT mydb.games_request_messages.games_request_messages, mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.users.user_id  FROM mydb.games_request_messages 
                     LEFT JOIN mydb.users ON mydb.games_request_messages.users_user_id = mydb.users.user_id
                     WHERE mydb.games_request_messages.user_want_to_play_games_id_user_want_to_play_games = """+str(id_user_want_to_play_games)
                 db.cursor.execute(query)
                 mycomment = db.cursor.fetchall()
 
+                mycomment2=[]
+                for i in mycomment: # converting int to string for void type error
+                    mycomment2.append(str(i[4]))
+                
                 if mycomment ==[]:
                     print("Mycomment is empty")
-                    return render_template('game_contact.html',data=myresult,username=username,game_name=game_name,wantid=id_user_want_to_play_games)
+                    return render_template('game_contact.html',data=myresult,data2=myresult2,username=username,game_name=game_name,wantid=id_user_want_to_play_games)
                 else:
                     print("Mycomment is not empty")
-                    return render_template('game_contact.html',data=myresult,lenRequestAnswer=len(mycomment),RequestAnswer=mycomment,username=username,game_name=game_name,wantid=id_user_want_to_play_games)
+                    return render_template('game_contact.html',data=myresult,data2=myresult2,data3=mycomment2,lenRequestAnswer=len(mycomment),RequestAnswer=mycomment,username=username,game_name=game_name,wantid=id_user_want_to_play_games)
             else:
                 if request.form.get("add_comment"):
                     user_description = request.form["email"] #request 
@@ -492,6 +524,7 @@ def profile():
                 if request.form.get("uphoto"):
 
                     image = request.files["file"]
+                    
 
                     if image.filename == "":
                         print("No filename")
