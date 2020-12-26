@@ -5,10 +5,18 @@ from database import Database
 import bcrypt
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 
+import os
+from werkzeug.utils import secure_filename
+
 from flask_mail import Mail, Message
 
 
 app = Flask(__name__)
+
+app.config["UPLOAD_FOLDER"] = r'.\static\images\users'
+app.config["ALLOWED_IMAGE_EXTENSIONS"] = ['JPG']
+
+
 mail = Mail(app)
 app.secret_key = "SportBuddy"
 db = Database("127.0.0.1", 3306, "root", "qwerty123456", "mydb")
@@ -25,6 +33,9 @@ app.config['MAIL_PASSWORD'] = str(site_mail[2])
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
+
+
+
 
 # @app.route("/passwordchange")
 # def passwordchange():
@@ -222,7 +233,7 @@ def contact(sport_id,id_User_want_to_play_sports):
                 myresult = db.cursor.fetchone()
                 print("Myresult", myresult)
                 query =""" 
-                    SELECT mydb.sport_request_messages.request_messages, mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email  FROM mydb.sport_request_messages 
+                    SELECT mydb.sport_request_messages.request_messages, mydb.users.user_name, mydb.users.user_surname, mydb.users.user_email, mydb.users.user_id  FROM mydb.sport_request_messages 
                     LEFT JOIN mydb.users ON mydb.sport_request_messages.users_user_id = mydb.users.user_id
                     WHERE mydb.sport_request_messages.user_want_to_play_sports_id_User_want_to_play_sports = """+str(id_User_want_to_play_sports)
                 db.cursor.execute(query)
@@ -413,6 +424,27 @@ def game_contact(game_id,id_user_want_to_play_games):
         print("Game Contact hata")
 
 
+def allowed_image(filename):
+
+    if not "." in filename:
+        return False
+
+    ext = filename.rsplit(".", 1)[1]
+
+    if ext.upper() in app.config["ALLOWED_IMAGE_EXTENSIONS"]:
+        return True
+    else:
+        return False
+
+
+def allowed_image_filesize(filesize):
+
+    if int(filesize) <= app.config["MAX_IMAGE_FILESIZE"]:
+        return True
+    else:
+        return False
+
+
 @app.route('/profile', methods=['GET','POST'])
 def profile():
     try:
@@ -422,6 +454,8 @@ def profile():
             query = "SELECT * FROM mydb.users where mydb.users.user_id= " + str(user_id)
             db.cursor.execute(query)
             myresult = db.cursor.fetchone()
+            print("my", myresult[0])
+            myresult2 = str(myresult[0])
             ff = myresult[6]
             if ff==1:
                 ff_send = "Yes"
@@ -429,7 +463,7 @@ def profile():
                 ff_send = "No"
 
             if request.method =="GET": #return values for button      
-                return render_template('profile.html',data=myresult,username=username,ff_send=ff_send)
+                return render_template('profile.html',data=myresult,data2=myresult2,username=username,ff_send=ff_send)
             else:
                 if request.form.get("edit_profile"):
                     name = request.form["name"]
@@ -455,18 +489,29 @@ def profile():
                         db.cursor.execute(query)
                         db.con.commit()
                     return redirect(url_for("profile"))
+                if request.form.get("uphoto"):
+
+                    image = request.files["file"]
+
+                    if image.filename == "":
+                        print("No filename")
+                        return redirect(url_for("profile"))
+
+                    if allowed_image(image.filename):
+                        filename= str(user_id) +".jpg"
+                        image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                        return redirect(url_for("profile"))
+
+                    else:
+                        print("That file extension is not allowed")
+                        return redirect(url_for("profile"))
+                    
         else:
             return redirect(url_for("login",haveto="You have to sign in"))
     except:
         print("Profil Sayfa hatası")
 
 
-@app.route('/profile', methods=['POST'])
-def upload_file():
-    uploaded_file = request.files['file']
-    if uploaded_file.filename != '':
-        uploaded_file.save(uploaded_file.filename)
-    return redirect(url_for('sport_index'))
 
 
 @app.route('/login', methods=['GET','POST'])
