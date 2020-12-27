@@ -269,3 +269,9 @@ div form .btn:hover{
   background-color: #8402af;
 }
 
+div div .longname{
+  width: 9em; /* the element needs a fixed width (in px, em, %, etc) */
+  overflow: hidden; /* make sure it hides the content that overflows */
+  white-space: nowrap; /* don't break the line */
+  text-overflow: ellipsis; /* give the beautiful '...' effect */
+}

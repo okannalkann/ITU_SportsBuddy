@@ -44,7 +44,7 @@
                             onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/404.jpg')}}'" alt="Card image cap">
                           
                           <div class="card-body">
-                              <h4 class="card-title text-white">{{data[i][1]}}</h4>
+                              <h4 class="card-title longname text-white">{{data[i][1]}}</h4>
                               {% if GameArray %}
                                 <h6 id="homeGameType" class="text-muted">{{GameArray[i]}}</h6>
                               {% endif %}
