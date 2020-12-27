@@ -545,6 +545,11 @@ def profile():
         print("Profil Sayfa hatası")
 
 
+@app.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return render_template('error.html'), 404
+
 
 
 @app.route('/login', methods=['GET','POST'])
