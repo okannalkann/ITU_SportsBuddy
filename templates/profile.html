@@ -25,8 +25,8 @@
                         <tr>
                             <th> Profile Photo:</th>
                             <td>
-                            <img class="card-img-top mx-auto" width="50px" height="400px"  style="text-align:center;" src="{{ url_for('static', filename='/images/users/'+ data2+'.jpg')}}" 
-                            onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/users/user.jpg')}}'" alt="Card image cap"></td>
+                            <img class="card-img-top mx-auto"   style="text-align:center;" src="{{ url_for('static', filename='/images/users/'+ data2+'.jpg')}}" 
+                            onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/users/user.jpg')}}'" alt="Card image cap" height="50%"></td>
                           
                              <form method="POST" enctype=multipart/form-data>
                                 <input type="file" name="file">
