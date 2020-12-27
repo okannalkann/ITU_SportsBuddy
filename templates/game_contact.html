@@ -13,15 +13,14 @@
         <div class="col-lg-12">
             <div class="card text-center">
                 <div class="card-header">
-                    {{data[0]}} {{data[1]}}
+                {% if data2 %} 
+                    <img class="mr-3 align-middle" style="float:left;" src="{{ url_for('static', filename='/images/users/'+ data2+'.jpg')}}" height="64px" width="64px" 
+                    onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/users/user.jpg')}}'" alt="Card image cap">
+                {% endif %} 
+                    <p style="float:left; padding-top:25px;">{{data[0]}} {{data[1]}}</p>
                 </div>
                 <div class="card-body">
-                    <table class="table-sm mx-auto" style="width:50%;">
-                        <tr>
-                            <th></th>
-                            <td>{% if data2 %} <img class="mr-3 align-middle" style="float:left;" src="{{ url_for('static', filename='/images/users/'+ data2+'.jpg')}}" height="128px" width="96px"onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/users/user.jpg')}}'" alt="Card image cap">{% endif %} 
-                            </td>
-                        </tr>
+                    <table class="table-sm mx-auto " style="width:100%;">
                         <tr>
                             <th>Description:</th>
                             <td><p class="card-text">{{data[2]}}</td>
@@ -31,7 +30,6 @@
                             <td><p class="card-text">{{data[3]}}</p></td>
                         </tr>
                     </table>
-                    <br>
                     <div class="openBtn mx-auto" >
                         <button class="openButton"  onclick="openForm()"><strong>Send comment</strong></button>
                     </div>
@@ -60,17 +58,19 @@
          {% for i in range(0, lenRequestAnswer) %}
                 <div class="col-lg-12">
                     <div class="card text-center">
-                          <div class="card-header">
-                            {% if data3 %} <img class="mr-3 align-middle" style="float:left;" src="{{ url_for('static', filename='/images/users/'+ data3[i]+'.jpg')}}" height="64px" width="64px"onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/users/user.jpg')}}'" alt="Card image cap">{% endif %} 
-                            <p style="float:left; padding-top:25px;">{{RequestAnswer[i][1]}} {{RequestAnswer[i][2]}}</p>
-                          </div>
-                          <div class="card-body">
-                            <div class="media">
-                              <div class="media-body">
-                                <p class="card-text">{{RequestAnswer[i][0]}}</p>
-                              </div>
+                        <div class="card-header">
+                        {% if data3 %} <img class="mr-3 align-middle" style="float:left;" src="{{ url_for('static', filename='/images/users/'+ data3[i]+'.jpg')}}" height="64px" width="64px"onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/users/user.jpg')}}'" alt="Card image cap">{% endif %} 
+                        <p style="float:left; padding-top:25px;">{{RequestAnswer[i][1]}} {{RequestAnswer[i][2]}}</p>
+                        </div>
+                        <div class="card-body">
+                        <div class="media">
+                            <div class="media-body">
+                            <p class="card-text">{{RequestAnswer[i][0]}}</p>
                             </div>
-                          </div>
+                        </div>
+                        </div>
+                        <div class="card-footer text-muted">
+                        </div>
                       </div>
                     <br>
                 </div>

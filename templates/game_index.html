@@ -35,9 +35,9 @@
                         <div class="card text-center">
                             <div class="card-header">
                               {% if data2 %} 
-                                <img class="mr-3 align-middle" style="float:left;" src="{{ url_for('static', filename='/images/users/'+ data2[i]+'.jpg')}}" height="128px" width="96px"onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/users/user.jpg')}}'" alt="Card image cap">
+                                <img class="mr-3 align-middle" style="float:left;" src="{{ url_for('static', filename='/images/users/'+ data2[i]+'.jpg')}}" height="64px" width="64px"onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/users/user.jpg')}}'" alt="Card image cap">
                               {% endif %} 
-                              <h4 style="float:left; padding-top:25px;">{{data[i][0]}} {{data[i][1]}}</h4>
+                              <h4 style="float:left; padding-top:15px;">{{data[i][0]}} {{data[i][1]}}</h4>
                             </div>
                             <div class="card-body">
                               <div class="media">
