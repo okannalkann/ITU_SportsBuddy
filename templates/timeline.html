@@ -19,7 +19,16 @@
             <input type="file" name="file">
             <input type="submit" name="uphoto" value="Upload">
 
-            <input type="submit" name="add_request" class="btn" Value="Send"></button>
+            {% if Sports %}
+                <label for="game_types">Which Sport</label>
+                <select name="categories" id="sports">
+            {% for i in range(0, lenSports) %}
+                    <option value="{{Sports[i][1]}}" name="sports">{{Sports[i][1]}}</option>
+            {% endfor %}
+                </select>
+            {% endif %}
+
+            <input type="submit" name="sharePhoto" class="btn" Value="Send"></button>
             <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
           </form>
         </div>
@@ -63,7 +72,14 @@
 
 
             
-
+<script>
+      function openForm() {
+        document.getElementById("popupForm").style.display = "block";
+      }
+      function closeForm() {
+        document.getElementById("popupForm").style.display = "none";
+      }
+    </script>
 {% endblock %}
   </body>
 </html>

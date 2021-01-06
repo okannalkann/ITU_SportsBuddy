@@ -569,10 +569,23 @@ def timeline():
                 SharedPhotoId=[]
                 for i in Alltimeline: # converting int to string for void type error
                     SharedPhotoId.append(str(i[0]))
+                
+                query = "SELECT * FROM mydb.sports"
+                db.cursor.execute(query)
+                AllSports = db.cursor.fetchall()
+                return render_template("timeline.html",data=Alltimeline,lenAll=len(Alltimeline),data2=photoId,
+                data3=SharedPhotoId,username=username,Sports=AllSports,lenSports=len(AllSports))
+
             else:
                 if request.form.get("uphoto"):
 
                     image = request.files["file"]
+
+                    sport = request.form['sports']
+                    print(sport[0])
+                    query = "SELECT * FROM mydb.sports where sport_name=%s"
+                    db.cursor.execute(query,(sport[0],))
+                    AllSports = db.cursor.fetchall()
                     
                     description = request.form['description']
 
