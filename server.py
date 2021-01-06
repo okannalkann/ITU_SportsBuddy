@@ -16,6 +16,7 @@ from flask_mail import Mail, Message
 app = Flask(__name__)
 
 app.config["UPLOAD_FOLDER"] = r'.\static\images\users'
+app.config["UPLOAD_SHARE_PHOTO"] = r'.\static\images\timeline'
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ['JPG']
 
 
@@ -357,10 +358,8 @@ def game_index(game_id):
                     WHERE mydb.users.user_findingFriend = 1 and mydb.games.game_id = """
                 db.cursor.execute(query + str(game_id))
                 myresult = db.cursor.fetchall()
-                print("dasdasd", myresult)
                 myresult2=[]
                 for i in myresult: # converting int to string for void type error
-                    print("asdasda", i[5])
                     myresult2.append(str(i[5]))
                 
                 
@@ -549,6 +548,47 @@ def profile():
 def page_not_found(e):
     # note that we set the 404 status explicitly
     return render_template('error.html'), 404
+
+@app.route('/timeline', methods=['GET','POST'])
+def timeline():
+    try:
+        if 'user' in session:
+            username = session['user']
+            user_id=session['user_id']
+            if request.method=="GET":
+                query="""SELECT mydb.shared_sport_photos.shared_sport_photo_id, mydb.shared_sport_photos.sport_description, mydb.users.user_name, mydb.users.user_surname, mydb.users.user_id, mydb.sports.sport_name FROM mydb.shared_sport_photos
+                    LEFT JOIN mydb.users ON mydb.users.user_id = mydb.shared_sport_photos.users_user_id
+                    LEFT JOIN mydb.sports ON mydb.sports.sport_id = mydb.shared_sport_photos.sports_sport_id"""
+                db.cursor.execute(query)
+                Alltimeline = db.cursor.fetchall()
+
+                photoId=[]
+                for i in Alltimeline: # converting int to string for void type error
+                    photoId.append(str(i[4]))
+                
+                SharedPhotoId=[]
+                for i in Alltimeline: # converting int to string for void type error
+                    SharedPhotoId.append(str(i[0]))
+            else:
+                if request.form.get("uphoto"):
+
+                    image = request.files["file"]
+                    
+                    description = request.form['description']
+
+                    query="INSERT INTO mydb.shared_sport_photos (sport_description, users_user_id, sports_sport_id) VALUES (%s,%s, %s)"
+                    val = (description,user_id,)
+                    if image.filename == "":
+                        print("No filename")
+                        return redirect(url_for("profile"))
+
+                    if allowed_image(image.filename):
+                        filename= str(user_id) +".jpg"
+                        image.save(os.path.join(app.config['UPLOAD_SHARE_PHOTO'], filename))
+
+            return render_template("timeline.html",data=Alltimeline,lenAll=len(Alltimeline),data2=photoId,data3=SharedPhotoId,username=username)
+    except:
+        print("Timeline Page Error")
 
 
 

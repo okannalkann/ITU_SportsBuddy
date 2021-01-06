@@ -245,6 +245,7 @@ nav ul { margin: 0; }
   height: 25rem;
   width: 100%;
   object-position: center center;
+  object-fit:cover;
 }
 
 .collapse .navbar-nav{
@@ -274,4 +275,9 @@ div div .longname{
   overflow: hidden; /* make sure it hides the content that overflows */
   white-space: nowrap; /* don't break the line */
   text-overflow: ellipsis; /* give the beautiful '...' effect */
+}
+
+#deneme
+{
+  object-fit:contain;
 }

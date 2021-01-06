@@ -21,12 +21,13 @@
                     Profile
                 </div>
                 <div class="card-body">
-                    <table class="table-sm mx-auto" style="width:50%;">
+                    <table class="table-sm mx-auto" style="width:auto;">
                         <tr>
                             <th> Profile Photo:</th>
                             <td>
-                            <img class="card-img-top mx-auto"   style="text-align:center;" src="{{ url_for('static', filename='/images/users/'+ data2+'.jpg')}}" 
-                            onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/users/user.jpg')}}'" alt="Card image cap" height="50%"></td>
+                                <img class="card-img-top mx-auto" height="420px"   style="text-align:center; width:auto;" src="{{ url_for('static', filename='/images/users/'+ data2+'.jpg')}}" 
+                                onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/users/user.jpg')}}'" alt="Card image cap">
+                            </td>
                           
                              <form method="POST" enctype=multipart/form-data>
                                 <input type="file" name="file">

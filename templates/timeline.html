@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+{% block title%} Timeline {% endblock %}
+{% block username %}  <p>{{username}}</p> {% endblock %}
+
+{% block content%}
+
+<button style="background-color:#ac00e6; color:white; margin: auto; position:flex; display:flex;" class="btn btn-lg" onclick="openForm()">
+    Share Photo
+</button>
+
+      <div class="loginPopup">
+        <div class="formPopup" id="popupForm">
+          <form action="" method="POST" class="formContainer" enctype=multipart/form-data>
+            <h2>Enter Description your request</h2>
+            <label for="email">
+              <strong>Description</strong>
+            </label>
+            <textarea name="description" id="email" rows="10" cols="30" placeholder="Specify Your Request" required></textarea>
+            <input type="file" name="file">
+            <input type="submit" name="uphoto" value="Upload">
+
+            <input type="submit" name="add_request" class="btn" Value="Send"></button>
+            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+          </form>
+        </div>
+      </div>
+
+
+
+<div class="container">
+    <div class="row" style="padding-top:20px;">
+        <div class="col-lg-12">
+        {% if data %}
+            {% for i in range(0, lenAll) %}
+                <div class="card text-center">
+                    <div class="card-header">
+                        <img class="mr-3 align-middle text-middle" style="float:left;"  src="{{ url_for('static', filename='/images/users/'+ data2[i]+'.jpg')}}" height="64px" width="64px"
+                        onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/timeline/user.jpg')}}'" alt="Card image cap">
+                        <p style="float:left; padding-top:25px;">{{data[i][2]}} {{data[i][3]}}</p>
+                    </div>
+                    <div class="card-body">
+                        <table class="table-sm mx-auto ">
+                            <tr>
+                                <th><img class="mr-3 align-middle text-middle deneme" style="object-fit:cover;" src="{{ url_for('static', filename='/images/timeline/'+data3[i]+'.jpg')}}" height="480px" width="720px" 
+                        onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/timeline/user.jpg')}}'" alt="Card image cap"></th>
+                            </tr>
+                            <tr>
+                                <th><p style="float:left;">Description: </p><p class="card-text">{{data[i][1]}}</p></th>
+                            </tr>
+                        </table>
+                        
+                    </div>
+                    <div class="card-footer text-muted">
+                                <p class="card-text">{{data[i][5]}}</p>
+                    </div>
+                </div>
+                <br>
+            {% endfor %}
+        {% endif %}
+        </div>
+    </div>
+</div>
+
+
+            
+
+{% endblock %}
+  </body>
+</html>
