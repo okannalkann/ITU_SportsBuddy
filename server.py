@@ -7,6 +7,7 @@ from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSign
 
 from PIL import Image
 
+import sys
 import os
 from werkzeug.utils import secure_filename
 
@@ -556,11 +557,13 @@ def timeline():
             username = session['user']
             user_id=session['user_id']
             if request.method=="GET":
-                query="""SELECT mydb.shared_sport_photos.shared_sport_photo_id, mydb.shared_sport_photos.sport_description, mydb.users.user_name, mydb.users.user_surname, mydb.users.user_id, mydb.sports.sport_name FROM mydb.shared_sport_photos
+                query="""SELECT mydb.shared_sport_photos.shared_sport_photo_id, mydb.shared_sport_photos.sport_description, mydb.users.user_name, mydb.users.user_surname, mydb.users.user_id, mydb.sports.sport_name, mydb.shared_sport_photos.photo_reference FROM mydb.shared_sport_photos
                     LEFT JOIN mydb.users ON mydb.users.user_id = mydb.shared_sport_photos.users_user_id
                     LEFT JOIN mydb.sports ON mydb.sports.sport_id = mydb.shared_sport_photos.sports_sport_id"""
                 db.cursor.execute(query)
                 Alltimeline = db.cursor.fetchall()
+
+                prin(Alltimeline)
 
                 photoId=[]
                 for i in Alltimeline: # converting int to string for void type error
@@ -568,7 +571,7 @@ def timeline():
                 
                 SharedPhotoId=[]
                 for i in Alltimeline: # converting int to string for void type error
-                    SharedPhotoId.append(str(i[0]))
+                    SharedPhotoId.append(str(i[6]))
                 
                 query = "SELECT * FROM mydb.sports"
                 db.cursor.execute(query)
@@ -577,29 +580,44 @@ def timeline():
                 data3=SharedPhotoId,username=username,Sports=AllSports,lenSports=len(AllSports))
 
             else:
-                if request.form.get("uphoto"):
+                if request.form.get("sharePhoto"):
 
-                    image = request.files["file"]
-
-                    sport = request.form['sports']
-                    print(sport[0])
-                    query = "SELECT * FROM mydb.sports where sport_name=%s"
-                    db.cursor.execute(query,(sport[0],))
-                    AllSports = db.cursor.fetchall()
-                    
                     description = request.form['description']
-
-                    query="INSERT INTO mydb.shared_sport_photos (sport_description, users_user_id, sports_sport_id) VALUES (%s,%s, %s)"
-                    val = (description,user_id,)
+                    print(description)
+                    image = request.files["file"]
                     if image.filename == "":
                         print("No filename")
-                        return redirect(url_for("profile"))
+                        return redirect(url_for("timeline"))
+                    sport = request.form.get('categories')
+                    
+                    query = "SELECT * FROM mydb.sports where sport_name=%s"
+                    db.cursor.execute(query,(sport,))
+                    sport_id = db.cursor.fetchone()
+                    
+                    max = sys.maxsize
+                    photo_id=0
+                    k=1
+                    while(k<max):
+                        query="SELECT * FROM mydb.shared_sport_photos WHERE photo_reference =%s"
+                        db.cursor.execute(query,(k,))
+                        reference_id = db.cursor.fetchone()
+                        if reference_id==None:
+                            photo_id=k
+                            break
+                        k+=1
+
+                    query="INSERT INTO mydb.shared_sport_photos (sport_description, users_user_id, sports_sport_id, photo_reference) VALUES (%s,%s, %s, %s)"
+                    val = (description,user_id,sport_id[0],photo_id)
+                    
+                    db.cursor.execute(query,val)
+                    db.con.commit()
 
                     if allowed_image(image.filename):
-                        filename= str(user_id) +".jpg"
+                        filename= str(photo_id) +".jpg"
                         image.save(os.path.join(app.config['UPLOAD_SHARE_PHOTO'], filename))
+                        
 
-            return render_template("timeline.html",data=Alltimeline,lenAll=len(Alltimeline),data2=photoId,data3=SharedPhotoId,username=username)
+                    return redirect(url_for("timeline"))
     except:
         print("Timeline Page Error")
 

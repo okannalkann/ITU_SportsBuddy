@@ -15,12 +15,12 @@
             <label for="email">
               <strong>Description</strong>
             </label>
-            <textarea name="description" id="email" rows="10" cols="30" placeholder="Specify Your Request" required></textarea>
+            <textarea name="description" id="email" rows="8" cols="30" placeholder="Specify Your Request" required></textarea>
             <input type="file" name="file">
-            <input type="submit" name="uphoto" value="Upload">
-
+            <br>
+            <br>
             {% if Sports %}
-                <label for="game_types">Which Sport</label>
+                <label for="game_types">Sport: </label>
                 <select name="categories" id="sports">
             {% for i in range(0, lenSports) %}
                     <option value="{{Sports[i][1]}}" name="sports">{{Sports[i][1]}}</option>
