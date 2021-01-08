@@ -40,25 +40,6 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 
-
-
-# @app.route("/passwordchange")
-# def passwordchange():
-#     try:
-#         if 'user' in session:
-#             Session_user_id = session['user_id']
-#             db.cursor.execute("SELECT * FROM mydb.users WHERE user_id = %s",Session_user_id)
-#             myresult = db.cursor.fetchone()
-                  
-#             msg = Message('Password Reset', sender = 'no.reply.sportsbuddy@gmail.com', recipients = [str(myresult[3])])
-#             msg.body = "Hello "+str(myresult[1])+ str(myresult[2]) "şifre değişikliği için  from Flask-Mail"
-#             mail.send(msg)
-#             return "Sent"
-#         else:
-#             return redirect(url_for("login",haveto="You have to sign in"))
-#     except:
-#         print("Password Reset Error")
-
 @app.route('/', methods=['GET','POST'])
 def home_page():
     try:
@@ -619,10 +600,8 @@ def timeline():
                         return redirect(url_for("timeline"))
 
                     postType= request.form.get('postType')
-                    print(postType," 12321")
                     if postType == "GameType":
                         typePost = request.form.get('game_categories')
-                        print(typePost)
                         query = "SELECT * FROM mydb.games where game_name=%s"
                         db.cursor.execute(query,(typePost,))
                         game_id = db.cursor.fetchone()
@@ -638,7 +617,6 @@ def timeline():
                                 photo_id=k
                                 break
                             k+=1
-                        print(description,user_id,game_id[0],photo_id)
                         query="INSERT INTO mydb.shared_game_photos (photo_description, users_user_id, games_game_id, photo_reference) VALUES (%s,%s, %s, %s)"
                         val = (description,user_id,game_id[0],photo_id)
                         

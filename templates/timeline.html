@@ -114,6 +114,8 @@ $("#listgame").hide();
               </div>
             {% endif %}
 
+            <br>
+
             <input type="submit" name="sharePhoto" class="btn" Value="Send"></button>
             <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
           </form>
@@ -137,7 +139,7 @@ $("#listgame").hide();
                     <div class="card-body">
                         <table class="table-sm mx-auto ">
                             <tr>
-                                <th><img class="mr-3 align-middle text-middle deneme" style="object-fit:cover;" src="{{ url_for('static', filename='/images/timeline/sports/'+data3[i]+'.jpg')}}" height="480px" width="720px" 
+                                <th><img class="mr-3 align-middle text-middle deneme" style="object-fit:cover;" src="{{ url_for('static', filename='/images/timeline/sports/'+data3[i]+'.jpg')}}" height="480px" width="1000" 
                         onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/timeline/users/user.jpg')}}'" alt="Card image cap"></th>
                             </tr>
                             <tr>
