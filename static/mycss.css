@@ -281,3 +281,29 @@ div div .longname{
 {
   object-fit:contain;
 }
+
+
+.sharebtn-group button {
+  color: white; /* White text */ 
+  border: 1px solid #270135;
+  padding: 10px 24px; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+  float: left; /* Float the buttons side by side */
+}
+
+/* Clear floats (clearfix hack) */
+.sharebtn-group:after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.sharebtn-group button:not(:last-child) {
+  border-right: none; /* Prevent double borders */
+}
+
+/* Add a background color on hover */
+.sharebtn-group .shareP:hover {
+  font-size: medium;
+  opacity: 0.9;
+}

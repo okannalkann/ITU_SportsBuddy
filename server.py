@@ -17,7 +17,8 @@ from flask_mail import Mail, Message
 app = Flask(__name__)
 
 app.config["UPLOAD_FOLDER"] = r'.\static\images\users'
-app.config["UPLOAD_SHARE_PHOTO"] = r'.\static\images\timeline'
+app.config["UPLOAD_SPORTS_SHARE_PHOTO"] = r'.\static\images\timeline\sports'
+app.config["UPLOAD_GAMES_SHARE_PHOTO"] = r'.\static\images\timeline\games'
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ['JPG']
 
 
@@ -337,7 +338,7 @@ def games():
                 return render_template('games.html',lenAll=len(AllCategories),listCate=AllCategories,GameArray=gameType,lenG=len(categoryGame),len=len(categoryGame),data=categoryGame,data2=myresult2,username=username)
             
         else:
-            return redirect(url_for("login",haveto="You have to sign in"))
+            return redirect(url_for("login"))
     except:
         print("Games Page Error")
 
@@ -540,7 +541,7 @@ def profile():
                         return redirect(url_for("profile"))
                     
         else:
-            return redirect(url_for("login",haveto="You have to sign in"))
+            return redirect(url_for("login"))
     except:
         print("Profil Sayfa hatası")
 
@@ -557,13 +558,14 @@ def timeline():
             username = session['user']
             user_id=session['user_id']
             if request.method=="GET":
+
+                #POST SPORT
                 query="""SELECT mydb.shared_sport_photos.shared_sport_photo_id, mydb.shared_sport_photos.sport_description, mydb.users.user_name, mydb.users.user_surname, mydb.users.user_id, mydb.sports.sport_name, mydb.shared_sport_photos.photo_reference FROM mydb.shared_sport_photos
                     LEFT JOIN mydb.users ON mydb.users.user_id = mydb.shared_sport_photos.users_user_id
                     LEFT JOIN mydb.sports ON mydb.sports.sport_id = mydb.shared_sport_photos.sports_sport_id"""
                 db.cursor.execute(query)
                 Alltimeline = db.cursor.fetchall()
 
-                prin(Alltimeline)
 
                 photoId=[]
                 for i in Alltimeline: # converting int to string for void type error
@@ -576,48 +578,109 @@ def timeline():
                 query = "SELECT * FROM mydb.sports"
                 db.cursor.execute(query)
                 AllSports = db.cursor.fetchall()
+
+                # POST GAME
+
+                query="""SELECT mydb.shared_game_photos.shared_game_photo_id, mydb.shared_game_photos.photo_description, mydb.users.user_name, mydb.users.user_surname, mydb.users.user_id, mydb.games.game_name, mydb.shared_game_photos.photo_reference FROM mydb.shared_game_photos
+                LEFT JOIN mydb.users ON mydb.users.user_id = mydb.shared_game_photos.users_user_id
+                LEFT JOIN mydb.games ON mydb.games.game_id = mydb.shared_game_photos.games_game_id"""
+                db.cursor.execute(query)
+                AllGametimeline = db.cursor.fetchall()
+
+
+                GamephotoId=[]
+                for i in AllGametimeline: # converting int to string for void type error
+                    GamephotoId.append(str(i[4]))
+                
+                SharedGamePhotoId=[]
+                for i in AllGametimeline: # converting int to string for void type error
+                    SharedGamePhotoId.append(str(i[6]))
+                
+                query = "SELECT * FROM mydb.games"
+                db.cursor.execute(query)
+                AllGames = db.cursor.fetchall()
+
                 return render_template("timeline.html",data=Alltimeline,lenAll=len(Alltimeline),data2=photoId,
-                data3=SharedPhotoId,username=username,Sports=AllSports,lenSports=len(AllSports))
+                data3=SharedPhotoId,username=username,Sports=AllSports,lenSports=len(AllSports),
+                gameData=AllGametimeline,lengameData=len(AllGametimeline),GamePhotoId=GamephotoId,
+                SharedGamePhotoId=SharedGamePhotoId,Games=AllGames,lenGames=len(AllGames) )
+
+
 
             else:
                 if request.form.get("sharePhoto"):
 
                     description = request.form['description']
-                    print(description)
+                    
                     image = request.files["file"]
+                    
                     if image.filename == "":
                         print("No filename")
                         return redirect(url_for("timeline"))
-                    sport = request.form.get('categories')
-                    
-                    query = "SELECT * FROM mydb.sports where sport_name=%s"
-                    db.cursor.execute(query,(sport,))
-                    sport_id = db.cursor.fetchone()
-                    
-                    max = sys.maxsize
-                    photo_id=0
-                    k=1
-                    while(k<max):
-                        query="SELECT * FROM mydb.shared_sport_photos WHERE photo_reference =%s"
-                        db.cursor.execute(query,(k,))
-                        reference_id = db.cursor.fetchone()
-                        if reference_id==None:
-                            photo_id=k
-                            break
-                        k+=1
 
-                    query="INSERT INTO mydb.shared_sport_photos (sport_description, users_user_id, sports_sport_id, photo_reference) VALUES (%s,%s, %s, %s)"
-                    val = (description,user_id,sport_id[0],photo_id)
-                    
-                    db.cursor.execute(query,val)
-                    db.con.commit()
+                    postType= request.form.get('postType')
+                    print(postType," 12321")
+                    if postType == "GameType":
+                        typePost = request.form.get('game_categories')
+                        print(typePost)
+                        query = "SELECT * FROM mydb.games where game_name=%s"
+                        db.cursor.execute(query,(typePost,))
+                        game_id = db.cursor.fetchone()
+                        
+                        max = sys.maxsize
+                        photo_id=0
+                        k=1
+                        while(k<max):
+                            query="SELECT * FROM mydb.shared_game_photos WHERE photo_reference =%s"
+                            db.cursor.execute(query,(k,))
+                            reference_id = db.cursor.fetchone()
+                            if reference_id==None:
+                                photo_id=k
+                                break
+                            k+=1
+                        print(description,user_id,game_id[0],photo_id)
+                        query="INSERT INTO mydb.shared_game_photos (photo_description, users_user_id, games_game_id, photo_reference) VALUES (%s,%s, %s, %s)"
+                        val = (description,user_id,game_id[0],photo_id)
+                        
+                        db.cursor.execute(query,val)
+                        db.con.commit()
 
-                    if allowed_image(image.filename):
-                        filename= str(photo_id) +".jpg"
-                        image.save(os.path.join(app.config['UPLOAD_SHARE_PHOTO'], filename))
+                        if allowed_image(image.filename):
+                            filename= str(photo_id) +".jpg"
+                            image.save(os.path.join(app.config['UPLOAD_GAMES_SHARE_PHOTO'], filename))
+
+                    elif postType == "SportType":
+                        typePost = request.form.get('sport_categories')
+                        query = "SELECT * FROM mydb.sports where sport_name=%s"
+                        db.cursor.execute(query,(typePost,))
+                        sport_id = db.cursor.fetchone()
+                        
+                        max = sys.maxsize
+                        photo_id=0
+                        k=1
+                        while(k<max):
+                            query="SELECT * FROM mydb.shared_sport_photos WHERE photo_reference =%s"
+                            db.cursor.execute(query,(k,))
+                            reference_id = db.cursor.fetchone()
+                            if reference_id==None:
+                                photo_id=k
+                                break
+                            k+=1
+
+                        query="INSERT INTO mydb.shared_sport_photos (sport_description, users_user_id, sports_sport_id, photo_reference) VALUES (%s,%s, %s, %s)"
+                        val = (description,user_id,sport_id[0],photo_id)
+                        
+                        db.cursor.execute(query,val)
+                        db.con.commit()
+
+                        if allowed_image(image.filename):
+                            filename= str(photo_id) +".jpg"
+                            image.save(os.path.join(app.config['UPLOAD_SPORTS_SHARE_PHOTO'], filename))
                         
 
                     return redirect(url_for("timeline"))
+        else:
+            return redirect(url_for("login"))
     except:
         print("Timeline Page Error")
 
@@ -632,7 +695,6 @@ def login():
                 user_email = request.form["username"] #take username from website textbox
                 user_password = request.form["password"].encode('utf-8') #take password from website textbox
                 query = "SELECT * FROM mydb.users WHERE user_email =\"" + user_email + "\""
-                print(query)
                 db.cursor.execute(query)
                 Logincheck = db.cursor.fetchone()
                 if Logincheck:
@@ -660,11 +722,9 @@ def login():
                     return render_template("login.html",haveto="Password Not Matched")
                 
                 hash_password = bcrypt.hashpw(newUser_password,bcrypt.gensalt())
-                print(str(hash_password))
                 query = "SELECT * FROM mydb.users WHERE user_email =\"" + newUser_email + "\""
                 db.cursor.execute(query)
                 check_email= db.cursor.fetchone()
-                print(check_email)
                 if check_email != None:
                     return render_template("login.html",haveto="This e-mail already registered.")
                 else:
