@@ -19,3 +19,4 @@ INSERT INTO `mydb`.`games` (`game_id`, `game_name`) VALUES ('18', 'Rust');
 INSERT INTO `mydb`.`games` (`game_id`, `game_name`) VALUES ('19', 'Zula');
 INSERT INTO `mydb`.`games` (`game_id`, `game_name`) VALUES ('20', 'World of Warcraft');
 INSERT INTO `mydb`.`games` (`game_id`, `game_name`) VALUES ('21', 'Tom Clancy\'s Rainbow Six Siege');
+INSERT INTO `mydb`.`games` (`game_id`, `game_name`) VALUES ('22', 'Pummel Party');

@@ -2,15 +2,33 @@
 {% block title%} Index {% endblock %}
 {% block username %}  <p>{{username}}</p> {% endblock %}
 {% block content%}
-<h1 style="color:white;"><b> {{ sport_name[0]}}</b> </h1>
+
+<div class="row mx-auto container">
+  <div class="col gamePhotoLeft ml-0 px-0">
+    <img class="" style="" src="{{ url_for('static', filename='/images/sports/'+ sport_ids +'.jpg')}}" height="256px"
+    onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/404.jpg')}}'" alt="Card image cap">
+  </div>
+   <div class="col" >
+    <div class="row flex-column">
+      <div class="" >
+        <h2 style="color:white;"><b> {{ sport_name[0]}}</b> </h2>
+      </div>
+      <div class="d-flex flex-row">
+        <h4 style="color:white;"><b> {{lenSportWish}} Oyun İsteği</b> </h4>
+      </div>
+
+      <div class="">
+        <button style="" class="btn btn-lg addReq mt-5" onclick="openForm()">
+            Add new request
+        </button>
+      </div>
+  </div>
+</div>
+
 
 {% if yok%}
 <h1 style="color:white;"><b> {{yok}}</b> </h1>
 {% endif%}
-
-<button style="background-color:#ac00e6; color:white; margin: auto; position:flex; display:flex;" class="btn btn-lg" onclick="openForm()">
-    Add new request
-</button>
 
       <div class="loginPopup">
         <div class="formPopup" id="popupForm">
@@ -35,7 +53,7 @@
                     <div class="col-lg-12">
                         <div class="card text-center">
                             <div class="card-header">
-                              <img class="mr-3 align-middle" style="float:left;" src="{{ url_for('static', filename='/images/users/'+ data2[i]+'.jpg')}}" height="64px" width="64px"onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/users/user.jpg')}}'" alt="Card image cap">
+                              <img class="mr-3 align-middle ppcard" style="float:left;" src="{{ url_for('static', filename='/images/users/'+ data2[i]+'.jpg')}}" height="64px" width="64px"onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/users/user.jpg')}}'" alt="Card image cap">
                               <h4 style="float:left; padding-top:25px;">{{data[i][0]}} {{data[i][1]}}</h4>
                             </div>
                             <div class="card-body">
@@ -46,7 +64,7 @@
                               </div>
                             </div>
                             <div class="card-footer text-muted">
-                              <a href="/sports/{{sport_ids}}/{{data[i][4]}}" style="background-color:#ac00e6; color:white;" class="btn btn-lg">
+                              <a href="/sports/{{sport_ids}}/{{data[i][4]}}" style="background-color:#9147ff; color:white;" class="btn btn-lg">
                                 Contact
                               </a>
                             </div>

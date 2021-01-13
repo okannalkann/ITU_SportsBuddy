@@ -62,3 +62,4 @@ INSERT INTO `mydb`.`game_has_category` (`games_game_id`, `game_category_cate_id`
 INSERT INTO `mydb`.`game_has_category` (`games_game_id`, `game_category_cate_id`) VALUES ('21', '1');
 INSERT INTO `mydb`.`game_has_category` (`games_game_id`, `game_category_cate_id`) VALUES ('21', '18');
 INSERT INTO `mydb`.`game_has_category` (`games_game_id`, `game_category_cate_id`) VALUES ('21', '15');
+INSERT INTO `mydb`.`game_has_category` (`games_game_id`, `game_category_cate_id`) VALUES ('22', '15');

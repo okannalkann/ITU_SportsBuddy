@@ -53,19 +53,18 @@
                         </tr>
                     </table>
                     <br>
-                    <div class="openBtn mx-auto" >
-                        <div id="b2" >
-                            <form action="" method="POST">
-                            <div style="float:left;">
-                            <strong><input type="submit" name="change_findfriend" id="change_findfriend" Value="Find Friend"></strong >
-                            </div>
-                            <div style="float:left;">
-                            <strong><a href="/reset_request" name="reset_password" id="change_findfriend">Reset Password</a></strong >
-                            </div>
-                            </form>
-                            <button class="openButton" style="margin-left:20px;" onclick="openForm()"><strong>Edit Profile</strong></button>
-                            
+                    <div class="row flex-row mx-auto" >
+                        <div class="">
+                            <button class="profileEditButton" name="change_findfriend" id="changepassword" onclick="openForm2()">Reset Password</button>
                         </div>
+                        <div class="">
+                            <button class="profileEditButton" style="" onclick="openForm()"><strong>Edit Profile</strong></button>
+                        </div>
+                        <div class="">
+                            <form action="" method="POST">
+                                <input type="submit" name="change_findfriend" id="change_findfriend" Value="Find Friend">
+                            </form>
+                        </div>    
                     </div>
                         <div class="loginPopup">
                             <div class="formPopup" id="popupForm">
@@ -91,6 +90,26 @@
                                     <input type="text" name="password" id="password"  placeholder="Password" required>
                                     <input type="submit" name="edit_profile" class="btn" Value="Send">
                                     <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="loginPopup">
+                            <div class="formPopup2" id="popupForm2">
+                                <form action="" method="POST" class="formContainer">
+                                    <label for="email">
+                                    <strong>Old Password</strong>
+                                    </label>
+                                    <input type="text" name="oldpassword" id="oldpassword" value=""  placeholder="" required><label for="email">
+                                    <strong>New Password</strong>
+                                    </label>
+                                    <input type="text" name="password" id="password"  placeholder="" required>
+                                    <strong>Confirm New Password</strong>
+                                    </label>
+                                    <input type="text" name="cpassword" id="cpassword"  placeholder="" required>
+                                    
+                                    <input type="submit" name="changepassword" class="btn" Value="Send">
+                                    <button type="button" class="btn cancel" onclick="closeForm2()">Close</button>
                                 </form>
                             </div>
                         </div>

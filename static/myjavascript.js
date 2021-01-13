@@ -36,9 +36,12 @@ function scrollleft3() {
   elmnt.scrollLeft-=194;
 }
 
-// $(document).ready(function() {
-//     $(document).on('click', '.nav-item a', function (e) {
-//         $(this).parent().addClass('active').siblings().removeClass('active');
-//     });
-// });
 
+// $(document).ready(function(){
+//   console.log("asdiasda");
+//   $('.nav-item').click(function(e){
+//     $(this).toggleClass("activapage");
+//     console.log("deneme");
+//     e.stopPropagation();
+//   })
+// })

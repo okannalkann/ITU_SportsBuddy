@@ -168,10 +168,19 @@ def sport_index(sport_id):
                     myresult2.append(str(i[5]))
                 
 
+                query ="SELECT * FROM mydb.user_want_to_play_sports WHERE mydb.user_want_to_play_sports.sports_sport_id = "
+                db.cursor.execute(query + str(sport_id))
+                lenSportWish = db.cursor.fetchall()
+
+                sport_id=str(sport_id)
+
+
                 if myresult==[]:
                     yok="Nobody Wanted to Play :("
-                    return render_template('sport_index.html',yok=yok,username=username,sport_ids=sport_id,sport_name=sport_name)
-                return render_template('sport_index.html',len=len(myresult),data=myresult,data2=myresult2,username=username,sport_ids=sport_id,sport_name=sport_name)
+                    return render_template('sport_index.html',yok=yok,username=username,sport_ids=sport_id,sport_name=sport_name,lenSportWish=len(lenSportWish))
+                
+                return render_template('sport_index.html',len=len(myresult),data=myresult,data2=myresult2,username=username,
+                sport_ids=sport_id,sport_name=sport_name,lenSportWish=len(lenSportWish))
             
             else:
                 if request.form.get("add_request"):
@@ -345,12 +354,31 @@ def game_index(game_id):
                 for i in myresult: # converting int to string for void type error
                     myresult2.append(str(i[5]))
                 
+                game_id=str(game_id)
+
+
+                query =""" 
+                SELECT mydb.game_category.category_name FROM mydb.game_has_category 
+                LEFT JOIN mydb.game_category ON mydb.game_category.cate_id = mydb.game_has_category.game_category_cate_id
+                WHERE game_has_category.games_game_id =
+                """
+                db.cursor.execute(query + str(game_id))
+                game_cate = db.cursor.fetchall()
+
+
+                query ="SELECT * FROM mydb.user_want_to_play_games WHERE mydb.user_want_to_play_games.games_game_id = "
+                db.cursor.execute(query + str(game_id))
+                lenGameWish = db.cursor.fetchall()
+
                 
+
                 if myresult==[]:
                     yok="Nobody Wanted to Play :("
-                    return render_template('game_index.html',yok=yok,username=username,game_ids=game_id,game_name=game_name)
+                    return render_template('game_index.html',yok=yok,username=username,game_ids=game_id,
+                    game_name=game_name,categories=game_cate,lenCate=len(game_cate),lenGameWish=len(lenGameWish))
 
-                return render_template('game_index.html',len=len(myresult),data=myresult,data2=myresult2,username=username,game_ids=game_id,game_name=game_name)
+                return render_template('game_index.html',len=len(myresult),data=myresult,data2=myresult2,
+                username=username,game_ids=game_id,game_name=game_name,categories=game_cate,lenCate=len(game_cate),lenGameWish=len(lenGameWish))
             
             else:
                 if request.form.get("add_request"):
@@ -491,7 +519,6 @@ def profile():
                     db.cursor.execute(query, val) #added the database
                     db.con.commit()
                     return redirect(url_for("profile"))
-                    #query= " UPDATE mydb.users SET user_name= '" + str(name)+ "', user_surname= '"+ str(surname)+"', user_schoolNumber = "+str(school_number)+", user_email = '"+ str(email) +"', user_password = "+ str(hash_password) +" WHERE (user_id = "+str(user_id)+") "
 
                 if request.form.get("change_findfriend"):
                     if ff==1:
@@ -520,6 +547,33 @@ def profile():
                     else:
                         print("That file extension is not allowed")
                         return redirect(url_for("profile"))
+                if request.form.get("changepassword"):
+                    oldpassword = request.form["oldpassword"].encode('utf-8')
+                    newpassword = request.form["password"].encode('utf-8')
+                    cnewpassword = request.form["cpassword"].encode('utf-8')
+
+                    if newpassword != cnewpassword:
+                        flash("Password not matched","info")
+                        return redirect(url_for("profile"))
+
+                    email=session['user_email']
+
+                    query = "SELECT * FROM mydb.users WHERE user_email =\"" + email + "\""
+                    db.cursor.execute(query)
+                    myresult = db.cursor.fetchone()
+                    if myresult is None:
+                        return redirect(url_for("login"))
+                    if bcrypt.hashpw(oldpassword,myresult[5].encode('utf-8') ) == myresult[5].encode('utf-8'):
+                        hash_password = bcrypt.hashpw(newpassword,bcrypt.gensalt())
+                        query= (" UPDATE mydb.users SET user_password = %s WHERE (user_id = %s) ")
+                        val=(hash_password,user_id)
+                        db.cursor.execute(query, val) #added the database
+                        db.con.commit()
+                        flash('Password has been changed.', 'info')
+                    else:
+                        flash('Password did not changed.', 'info')
+                    return redirect(url_for("profile"))
+
                     
         else:
             return redirect(url_for("login"))
@@ -662,8 +716,6 @@ def timeline():
     except:
         print("Timeline Page Error")
 
-
-
 @app.route('/login', methods=['GET','POST'])
 def login():
     try:
@@ -775,7 +827,6 @@ def reset_request():
 @app.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_token(token):
     try:
-        print("deneme")
         user = verify_reset_token(token)
         if user is None:
             flash('That is an invalid or expired token', 'warning')

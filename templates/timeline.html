@@ -51,15 +51,15 @@ $("#listgame").hide();
  
 <div class="sharebtn-group" style="width:100%">
 
-  <button id="showall" style="background-color:#ac00e6; width:33.3%" class="shareP">
+  <button id="showall" style="background-color:#9147ff; width:33.3%" class="shareP">
       All Posts
   </button>
 
-  <button id="showsport" style="background-color:#ac00e6; width:33.3%" class="shareP" >
+  <button id="showsport" style="background-color:#9147ff; width:33.3%" class="shareP" >
       Sport Posts
   </button>
 
-  <button id="showgame" style="background-color:#ac00e6; width:33.3%" class="shareP">
+  <button id="showgame" style="background-color:#9147ff; width:33.3%" class="shareP">
       Game Posts
   </button>
 
@@ -67,7 +67,7 @@ $("#listgame").hide();
 </div>
 
 <br><br>
-  <button style="background-color:#ac00e6; color:white; margin: auto; position:flex; display:flex;" class="btn btn-lg" onclick="openForm()">
+  <button style="background-color:#9147ff; color:white; margin: auto; position:flex; display:flex;" class="btn btn-lg" onclick="openForm()">
       Share Photo
   </button>
 
@@ -132,14 +132,14 @@ $("#listgame").hide();
             {% for i in range(0, lenAll) %}
                 <div class="card text-center">
                     <div class="card-header">
-                        <img class="mr-3 align-middle text-middle" style="float:left;"  src="{{ url_for('static', filename='/images/users/'+ data2[i]+'.jpg')}}" height="64px" width="64px"
+                        <img class="mr-3 align-middle text-middle ppcard" style="float:left;"  src="{{ url_for('static', filename='/images/users/'+ data2[i]+'.jpg')}}" height="64px" width="64px"
                         onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/timeline/users/user.jpg')}}'" alt="Card image cap">
                         <p style="float:left; padding-top:25px;">{{data[i][2]}} {{data[i][3]}}</p>
                     </div>
                     <div class="card-body">
                         <table class="table-sm mx-auto ">
                             <tr>
-                                <th><img class="mr-3 align-middle text-middle deneme" style="object-fit:cover;" src="{{ url_for('static', filename='/images/timeline/sports/'+data3[i]+'.jpg')}}" height="480px" width="1000" 
+                                <th><img class="mr-3 align-middle text-middle ppcard" style="object-fit:cover;" src="{{ url_for('static', filename='/images/timeline/sports/'+data3[i]+'.jpg')}}" height="480px" width="1000" 
                         onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/timeline/users/user.jpg')}}'" alt="Card image cap"></th>
                             </tr>
                             <tr>

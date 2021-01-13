@@ -25,7 +25,7 @@ h1{
 }
 
 .active, a.nav-link:hover, a.navbar-brand:hover {
-    color:#ac00e6 !important;
+    color:#9147ff !important;
 }
 
 ul{
@@ -44,16 +44,25 @@ nav ul { margin: 0; }
   .openButton {
     border: none;
     border-radius: 5px;
-    background-color: #ac00e6;
+    background-color: #9147ff;
     color: white;
     padding: 14px 20px;
     cursor: pointer;
     position: fixed;
   }
+
+  .profileEditButton {
+    border: none;
+    border-radius: 5px;
+    background-color: #9147ff;
+    color: white;
+    padding: 14px 20px;
+    cursor: pointer;
+  }
   .openLogin {
     border: none;
     border-radius: 5px;
-    background-color: #ac00e6;
+    background-color: #9147ff;
     color: white;
     padding: 14px 20px;
     cursor: pointer;
@@ -62,7 +71,7 @@ nav ul { margin: 0; }
   .openLogin2 {
     border: none;
     border-radius: 5px;
-    background-color: #ac00e6;
+    background-color: #9147ff;
     color: white;
     padding: 14px 20px;
     cursor: pointer;
@@ -74,6 +83,15 @@ nav ul { margin: 0; }
     width: 100%;
   }
   .formPopup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 5%;
+    transform: translate(-50%, 5%);
+    border: 3px solid #999999;
+    z-index: 9;
+  }
+  .formPopup2 {
     display: none;
     position: fixed;
     left: 50%;
@@ -103,7 +121,7 @@ nav ul { margin: 0; }
   .formContainer .btn {
     padding: 12px 20px;
     border: none;
-    background-color: #ac00e6;
+    background-color: #9147ff;
     color: #fff;
     cursor: pointer;
     width: 100%;
@@ -111,7 +129,7 @@ nav ul { margin: 0; }
     opacity: 0.8;
   }
   .formContainer .cancel {
-    background-color: #ac00e6;
+    background-color: #9147ff;
   }
   .formContainer .btn:hover,
   .openButton:hover {
@@ -145,16 +163,12 @@ nav ul { margin: 0; }
 
 #change_findfriend
 {
-  display: flex;
-  justify-content: left;
-
   border: none;
   border-radius: 5px;
-  background-color: #ac00e6;
+  background-color: #9147ff;
   color: white;
   padding: 14px 20px;
   cursor: pointer;
-  position: flex;
 }
 #change_findfriend:hover {
   opacity: 0.75;
@@ -181,8 +195,17 @@ nav ul { margin: 0; }
 .container .row .sport_card img{
   height: 25rem;
   width: 100%;
+  object-position: center center;
+  object-fit:cover;
+  object-position: center center;
 }
 
+.ppcard
+{
+  object-fit:cover;
+  object-position: center center;
+
+}
 .container .row .sport_card .card-body{
   padding-top: 0 !important;
 }
@@ -248,6 +271,8 @@ nav ul { margin: 0; }
   object-fit:cover;
 }
 
+
+
 .collapse .navbar-nav{
   width: 100%;
 }
@@ -264,7 +289,7 @@ nav ul { margin: 0; }
 }
 
 div form .btn{
-  background-color: #ac00e6;
+  background-color: #9147ff;
 }
 div form .btn:hover{
   background-color: #8402af;
@@ -306,4 +331,34 @@ div div .longname{
 .sharebtn-group .shareP:hover {
   font-size: medium;
   opacity: 0.9;
+}
+
+.gamePhotoLeft
+{
+  max-width: max-content !important;
+  margin-right: 30px ;
+}
+
+.catetype
+{
+  background-color: #bbbbbb;
+  border-radius: 10px;
+  padding: 0px 10px;
+}
+
+.catetype h6
+{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.catetype:hover
+{
+  background-color: #dddddd;
+}
+
+.addReq
+{
+  background-color:#9147ff !important; 
+  color:white !important; 
 }
