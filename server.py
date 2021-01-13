@@ -503,9 +503,31 @@ def profile():
                 ff_send = "Yes"
             else:
                 ff_send = "No"
+            
+            query="""SELECT mydb.user_want_to_play_games.User_description, mydb.users.user_id, mydb.games.game_name FROM mydb.user_want_to_play_games
+            LEFT JOIN mydb.games ON mydb.games.game_id = mydb.user_want_to_play_games.games_game_id
+            LEFT JOIN mydb.users ON mydb.users.user_id = mydb.user_want_to_play_games.users_user_id
+            WHERE users_user_id = """+ str(user_id)
+            db.cursor.execute(query)
+            allUserPost = db.cursor.fetchall()
+            UserPI=[]
+            for i in allUserPost:
+                UserPI.append(str(i[1]))
+
+            query="""SELECT mydb.user_want_to_play_sports.User_description, mydb.users.user_id, mydb.sports.sport_name FROM mydb.user_want_to_play_sports
+            LEFT JOIN mydb.sports ON mydb.sports.sport_id = mydb.user_want_to_play_sports.sports_sport_id
+            LEFT JOIN mydb.users ON mydb.users.user_id = mydb.user_want_to_play_sports.users_user_id
+            WHERE users_user_id = """+ str(user_id)
+            db.cursor.execute(query)
+            allUserSportPost = db.cursor.fetchall()
+            UserSportPI=[]
+            for i in allUserSportPost:
+                UserSportPI.append(str(i[1]))
 
             if request.method =="GET": #return values for button      
-                return render_template('profile.html',data=myresult,data2=myresult2,username=username,ff_send=ff_send)
+                return render_template('profile.html',data=myresult,data2=myresult2,username=username,
+                ff_send=ff_send,allUserPost=allUserPost,lenallUserPost=len(allUserPost),UserPI=UserPI,UserSportPI=UserSportPI,
+                allUserSportPost=allUserSportPost,lenallUserSportPost=len(allUserSportPost))
             else:
                 if request.form.get("edit_profile"):
                     name = request.form["name"]
@@ -574,6 +596,40 @@ def profile():
                         flash('Password did not changed.', 'info')
                     return redirect(url_for("profile"))
 
+                if request.form.get("getpost"):                 
+                    print("delee")
+                    allp = request.form["posttype"]
+                    if allp=="allpost":
+                        print("@@@@@@@@@@@@@@@@")
+                        return redirect(url_for("profile"))
+                    if allp=="games":
+                        query="""SELECT mydb.user_want_to_play_games.User_description, mydb.users.user_id, mydb.games.game_name FROM mydb.user_want_to_play_games
+                        LEFT JOIN mydb.games ON mydb.games.game_id = mydb.user_want_to_play_games.games_game_id
+                        LEFT JOIN mydb.users ON mydb.users.user_id = mydb.user_want_to_play_games.users_user_id
+                        WHERE users_user_id = """+ str(user_id)
+                        db.cursor.execute(query)
+                        allUserPost = db.cursor.fetchall()
+                        UserPI=[]
+                        for i in allUserPost:
+                            UserPI.append(str(i[1]))
+
+                        return render_template('profile.html',data=myresult,data2=myresult2,username=username,
+                        ff_send=ff_send,allUserPost=allUserPost,lenallUserPost=len(allUserPost),UserPI=UserPI)
+                    if allp=="sports":
+                        query="""SELECT mydb.user_want_to_play_sports.User_description, mydb.users.user_id, mydb.sports.sport_name FROM mydb.user_want_to_play_sports
+                        LEFT JOIN mydb.sports ON mydb.sports.sport_id = mydb.user_want_to_play_sports.sports_sport_id
+                        LEFT JOIN mydb.users ON mydb.users.user_id = mydb.user_want_to_play_sports.users_user_id
+                        WHERE users_user_id = """+ str(user_id)
+                        db.cursor.execute(query)
+                        allUserPost = db.cursor.fetchall()
+                        UserPI=[]
+                        for i in allUserPost:
+                            UserPI.append(str(i[1]))
+
+                        return render_template('profile.html',data=myresult,data2=myresult2,username=username,
+                        ff_send=ff_send,allUserPost=allUserPost,lenallUserPost=len(allUserPost),UserPI=UserPI)
+
+                        
                     
         else:
             return redirect(url_for("login"))

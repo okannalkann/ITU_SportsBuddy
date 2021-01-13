@@ -14,7 +14,7 @@
 	{% endwith %}
 
 
-    <div class="col-lg-12">
+    <div class="col-lg-12 mb-5">
         {% if data%}
             <div class="card text-center mx-auto">
                 <div class="card-header">
@@ -126,8 +126,97 @@
 
     </div>
 
+    <div class="card container mx-auto pt-5">
+        <div class="row flex-row mx-auto">
+            <form action="" method="POST">
+                <input type="radio" id="games" name="posttype" value="games">
+                <label for="games" class="mr-3">Games</label>
+                <input type="radio" id="sports" name="posttype" value="sports">
+                <label for="sports" class="mr-3">Sports</label>
+                <input type="radio" id="allpost" name="posttype" value="allpost" checked="checked">
+                <label for="other">All</label>
+                <br><br>
+                <input type="submit" name="getpost" id="change_findfriend" Value="Show Posts">
+            </form>
+        </div>
+    </div>
 
-    
+    <div class="col-lg-12">
+        {% if allUserPost%}
+            <div class="container">
+                <div class="row" style="padding-top:20px;">
+                    {% if data%}
+                        {% for i in range(0, lenallUserPost) %}
+                            <div class="col-lg-12">
+                                <div class="card text-center">
+                                    <div class="card-header">
+                                    {% if data2 %} 
+                                        <img class="mr-3 align-middle ppcard" style="float:left;" src="{{ url_for('static', filename='/images/users/'+ UserPI[i]+'.jpg')}}" height="64px" width="64px"onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/users/user.jpg')}}'" alt="Card image cap">
+                                    {% endif %} 
+                                    <h4 style="float:left; padding-top:15px;">{{data[1]}} {{data[2]}}</h4>
+                                    </div>
+                                    <div class="card-body">
+                                    <div class="media">
+                                        <div class="media-body" >
+                                        <h4 class="card-text">{{allUserPost[i][0]}}</h4>
+                                        <br>
+                                        </div>
+                                        <br><br>
+                                    </div>
+                                        <div class="card-footer text-muted">
+                                            {{allUserPost[i][2]}}
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                                <br><br>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+
+    <div class="col-lg-12">
+        {% if allUserSportPost%}
+            <div class="container">
+                <div class="row" style="padding-top:20px;">
+                    {% if data%}
+                        {% for i in range(0, lenallUserSportPost) %}
+                            <div class="col-lg-12">
+                                <div class="card text-center">
+                                    <div class="card-header">
+                                    {% if data2 %} 
+                                        <img class="mr-3 align-middle ppcard" style="float:left;" src="{{ url_for('static', filename='/images/users/'+ UserSportPI[i]+'.jpg')}}" height="64px" width="64px"onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/users/user.jpg')}}'" alt="Card image cap">
+                                    {% endif %} 
+                                    <h4 style="float:left; padding-top:15px;">{{data[1]}} {{data[2]}}</h4>
+                                    </div>
+                                    <div class="card-body">
+                                    <div class="media">
+                                        <div class="media-body" >
+                                        <h4 class="card-text">{{allUserSportPost[i][0]}}</h4>
+                                        <br>
+                                        </div>
+                                        <br><br>
+                                    </div>
+                                        <div class="card-footer text-muted">
+                                            {{allUserSportPost[i][2]}}
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                                <br><br>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+
 
  <script>
       function openForm() {
