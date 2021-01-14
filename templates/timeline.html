@@ -137,9 +137,9 @@ $("#listgame").hide();
                         <p style="float:left; padding-top:25px;">{{data[i][2]}} {{data[i][3]}}</p>
                     </div>
                     <div class="card-body">
-                        <table class="table-sm mx-auto ">
-                            <tr>
-                                <th><img class="mr-3 align-middle text-middle ppcard" style="object-fit:cover;" src="{{ url_for('static', filename='/images/timeline/sports/'+data3[i]+'.jpg')}}" height="480px" width="1000" 
+                        <table class="table table-borderless mx-auto">
+                            <tr class="mx-auto">
+                                <th><img class="mr-3 align-middle text-middle ppcard" style="object-fit:cover;" src="{{ url_for('static', filename='/images/timeline/sports/'+data3[i]+'.jpg')}}" height="auto" width="100%" 
                         onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/timeline/users/user.jpg')}}'" alt="Card image cap"></th>
                             </tr>
                             <tr>
@@ -176,9 +176,9 @@ $("#listgame").hide();
                         <p style="float:left; padding-top:25px;">{{gameData[i][2]}} {{gameData[i][3]}}</p>
                     </div>
                     <div class="card-body">
-                        <table class="table-sm mx-auto ">
+                        <table class="table table-borderless mx-auto">
                             <tr>
-                                <th><img class="mr-3 align-middle text-middle deneme" style="object-fit:cover;" src="{{ url_for('static', filename='/images/timeline/games/'+SharedGamePhotoId[i]+'.jpg')}}" height="480px" width="720px" 
+                                <th class="mx-auto"><img class="mr-3 align-middle text-middle deneme" style="object-fit:cover;" src="{{ url_for('static', filename='/images/timeline/games/'+SharedGamePhotoId[i]+'.jpg')}}" height="auto" width="100%" 
                         onerror="this.onerror=null; this.src='{{ url_for('static', filename='/images/timeline/users/user.jpg')}}'" alt="Card image cap"></th>
                             </tr>
                             <tr>

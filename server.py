@@ -715,7 +715,7 @@ def timeline():
                         query = "SELECT * FROM mydb.games where game_name=%s"
                         db.cursor.execute(query,(typePost,))
                         game_id = db.cursor.fetchone()
-                        
+                        print(typePost,game_id)
                         max = sys.maxsize
                         photo_id=0
                         k=1
@@ -727,12 +727,15 @@ def timeline():
                                 photo_id=k
                                 break
                             k+=1
+#""" Pummel parti baya eğlenceliydi. Bidahakine sizi de bekleriz :)) @tiras16 @irtegunk16 @yaylali16 @alkano @dursune16 @arslanru16 """
+                        print(k,photo_id)
+                        print(description,user_id,game_id[0],photo_id)
                         query="INSERT INTO mydb.shared_game_photos (photo_description, users_user_id, games_game_id, photo_reference) VALUES (%s,%s, %s, %s)"
                         val = (description,user_id,game_id[0],photo_id)
                         
                         db.cursor.execute(query,val)
                         db.con.commit()
-
+                        print("como")
                         if allowed_image(image.filename):
                             filename= str(photo_id) +".jpg"
                             image.save(os.path.join(app.config['UPLOAD_GAMES_SHARE_PHOTO'], filename))

@@ -37,11 +37,11 @@ function scrollleft3() {
 }
 
 
-// $(document).ready(function(){
-//   console.log("asdiasda");
-//   $('.nav-item').click(function(e){
-//     $(this).toggleClass("activapage");
-//     console.log("deneme");
-//     e.stopPropagation();
-//   })
-// })
+$(document).ready(function(){
+  console.log("asdiasda");
+  $('.nav-item').click(function(e){
+    $(this).toggleClass("active");
+    console.log("deneme",e);
+    e.stopPropagation();
+  })
+})
