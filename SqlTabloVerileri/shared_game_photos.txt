@@ -1,2 +1,0 @@
-INSERT INTO `mydb`.`shared_game_photos` (`shared_game_photo_id`, `photo_description`, `users_user_id`, `games_game_id`, `photo_reference`) VALUES ('1', 'Harika bi cs macıydı', '1', '1', '1');
-INSERT INTO `mydb`.`shared_game_photos` (`shared_game_photo_id`, `photo_description`, `users_user_id`, `games_game_id`, `photo_reference`) VALUES ('2', 'Dota2 de üstümüze yok', '3', '2', '2');
