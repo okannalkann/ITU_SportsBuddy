@@ -7,8 +7,3 @@ MySQL database
 JavaScript
 CSS
 
-
-Yorum ekleme özelliği eklendi.
-Yeni İstek ekleme özelliği eklendi.
-Profil Sayfası eklendi.
-Profil güncelleme seçeneği eklendi.
